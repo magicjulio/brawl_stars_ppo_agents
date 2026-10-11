@@ -1,0 +1,2036 @@
+{
+  "battle_lifecycle": [
+    {
+      "name": "LogicBattleModeServer::tickUpdate(int)",
+      "v36_addr": "0x1304b0",
+      "v36_size": 56,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicBattleModeServer::setLocation(LogicLocationData const*)",
+      "v36_addr": "0x3aabe8",
+      "v36_size": 124,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicBattleModeServer::getTeamScore(int, bool)",
+      "v36_addr": "0x513c88",
+      "v36_size": 128,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicBattleModeServer::forceGameOver()",
+      "v36_addr": "0x7bf9d8",
+      "v36_size": 12,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicBattleModeServer::getCurrentMVP()",
+      "v36_addr": "0x4dd6b8",
+      "v36_size": 124,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicBattleModeServer::setRandomSeed(int)",
+      "v36_addr": "0x5d8398",
+      "v36_size": 12,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicBattleModeServer::addGameObjects(int, bool, LogicArrayList<LogicCharacterData const*>*, int, LogicArrayList<int>*)",
+      "v36_addr": "0x3274e4",
+      "v36_size": 5184,
+      "n_consts": 6,
+      "v29_addr": "0x17b938",
+      "shared_consts": [
+        "0x10624dd3",
+        "0x1b4e81b5",
+        "0x66666667",
+        "0xfff0bdc1",
+        "0xfffffed4"
+      ],
+      "n_shared": 5,
+      "score": 0.659,
+      "confidence": "HIGH"
+    },
+    {
+      "name": "LogicBattleModeServer::executeOneTick(LogicArrayList<BitStream*>*, BitStream*)",
+      "v36_addr": "0x8a26d8",
+      "v36_size": 1108,
+      "n_consts": 1,
+      "v29_addr": "0x3198c4",
+      "shared_consts": [
+        "0x7e07e07f"
+      ],
+      "n_shared": 1,
+      "score": 1.0,
+      "confidence": "HIGH"
+    },
+    {
+      "name": "LogicBattleModeServer::generateTileMap(int, int, int)",
+      "v36_addr": "0x84d504",
+      "v36_size": 124,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicBattleModeServer::setBotDifficulty(int)",
+      "v36_addr": "0x292104",
+      "v36_size": 8,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicBattleModeServer::handleClientInput(ClientInput*, int)",
+      "v36_addr": "0x75c168",
+      "v36_size": 2456,
+      "n_consts": 1,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_v29_const"
+    },
+    {
+      "name": "LogicBattleModeServer::addPlayer(LogicLong*, LogicCharacterData const*, LogicHeroUpgrades*, LogicBattleEmotes*, int, PlayerDisplayData*, bool, LogicSkinData const*)",
+      "v36_addr": "0x70b558",
+      "v36_size": 204,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicBattleModeServer::spawnHero(LogicCharacterData const*, LogicHeroUpgrades*, int, int, bool)",
+      "v36_addr": "0x4454c8",
+      "v36_size": 176,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    }
+  ],
+  "command_action": [
+    {
+      "name": "LogicCommand::setExecuteTick(int)",
+      "v36_addr": "0x454f4c",
+      "v36_size": 8,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicCommand::decode(ByteStream*)",
+      "v36_addr": "0x509130",
+      "v36_size": 236,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicCommandManager::addCommand(LogicCommand*)",
+      "v36_addr": "0x82f410",
+      "v36_size": 280,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicCommandManager::createCommand(int)",
+      "v36_addr": "0x45bc30",
+      "v36_size": 2956,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicCommandManager::decodeCommand(ByteStream*, bool, bool)",
+      "v36_addr": "0x1057e4",
+      "v36_size": 380,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicCommandManager::encodeCommand(ChecksumEncoder*, LogicCommand const*)",
+      "v36_addr": "0x6b8128",
+      "v36_size": 76,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicCommandManager::saveCommandToJSON(LogicJSONObject*, LogicCommand const*)",
+      "v36_addr": "0x5d3db0",
+      "v36_size": 216,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicCommandManager::loadCommandFromJSON(LogicJSONObject const*)",
+      "v36_addr": "0xca1b0",
+      "v36_size": 224,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    }
+  ],
+  "data_load": [
+    {
+      "name": "LogicGlobals::LogicGlobals(CSVTable*, int)",
+      "v36_addr": "0x8a06fc",
+      "v36_size": 156,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTable::setTable(CSVTable*)",
+      "v36_addr": "0x3af8a0",
+      "v36_size": 496,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTable::loadTable(CSVTable*)",
+      "v36_addr": "0x281aac",
+      "v36_size": 168,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getGlobals()",
+      "v36_addr": "0x6fd8cc",
+      "v36_size": 20,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getItemFor(LogicCharacterData const*, int)",
+      "v36_addr": "0x8f50d8",
+      "v36_size": 184,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getAllFaces(LogicArrayList<LogicFaceData const*>*)",
+      "v36_addr": "0x47f174",
+      "v36_size": 376,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getDataById(int)",
+      "v36_addr": "0x4554cc",
+      "v36_size": 80,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getDataById(int, int)",
+      "v36_addr": "0x696750",
+      "v36_size": 120,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getDustData()",
+      "v36_addr": "0x692dd0",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getGoldData()",
+      "v36_addr": "0x818588",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getWinMusic()",
+      "v36_addr": "0x869dd4",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::initTilemap(CSVNode const*, int)",
+      "v36_addr": "0x57ac98",
+      "v36_size": 4,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getAllHeroes(LogicHomeMode const*, LogicArrayList<LogicCharacterData const*>*)",
+      "v36_addr": "0x83df10",
+      "v36_size": 860,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getBoltsData()",
+      "v36_addr": "0x4c25d0",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getCardPower(LogicClientAvatar const*, LogicCardData const*, int)",
+      "v36_addr": "0x703dd8",
+      "v36_size": 36,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getCardPower(int, LogicCardData const*, int)",
+      "v36_addr": "0x227664",
+      "v36_size": 140,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getDrawMusic()",
+      "v36_addr": "0x23bdf4",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getFirstItem(LogicHomeMode const*, int, LogicCharacterData const*)",
+      "v36_addr": "0x7329c8",
+      "v36_size": 8,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getHeroCount(LogicHomeMode const*, LogicClientAvatar const*, int, bool)",
+      "v36_addr": "0x85c9d4",
+      "v36_size": 344,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getHeroCount(LogicClientAvatar const*)",
+      "v36_addr": "0x6a3ad0",
+      "v36_size": 172,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getItemIndex(LogicHomeMode const*, LogicCardData const*, bool)",
+      "v36_addr": "0x382ee0",
+      "v36_size": 584,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getLoseMusic()",
+      "v36_addr": "0x2105b8",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getMenuMusic()",
+      "v36_addr": "0x3569b4",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getPinByName(String const&, LogicData const*)",
+      "v36_addr": "0x845c20",
+      "v36_size": 36,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getWindSound()",
+      "v36_addr": "0x724ab0",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getBossEffect()",
+      "v36_addr": "0x23168c",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getCardByName(String const&, LogicData const*)",
+      "v36_addr": "0x25c8ec",
+      "v36_size": 36,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getDataByName(String const&, int, LogicData const*)",
+      "v36_addr": "0x333bc4",
+      "v36_size": 48,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getFaceByName(String const&, LogicData const*)",
+      "v36_addr": "0x1fc71c",
+      "v36_size": 36,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getHealEffect()",
+      "v36_addr": "0x7ce970",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getItemByName(String const&, LogicData const*)",
+      "v36_addr": "0x7be238",
+      "v36_size": 36,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getLinkByName(String const&, LogicData const*)",
+      "v36_addr": "0xefdd0",
+      "v36_size": 36,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getSkinByName(String const&, LogicData const*)",
+      "v36_addr": "0x7aedf4",
+      "v36_size": 36,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getTableCount()",
+      "v36_addr": "0x71a4d8",
+      "v36_size": 8,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::initDataTable(CSVNode const*, int)",
+      "v36_addr": "0x5010f4",
+      "v36_size": 416,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getCurseEffect()",
+      "v36_addr": "0x526e4c",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getDiamondData()",
+      "v36_addr": "0x472104",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getEmoteByName(String const&, LogicData const*)",
+      "v36_addr": "0x812fdc",
+      "v36_size": 36,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getHeroByIndex(int)",
+      "v36_addr": "0x1e7260",
+      "v36_size": 156,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getItemByIndex(LogicHomeMode const*, int, LogicCharacterData const*, int)",
+      "v36_addr": "0x69aac8",
+      "v36_size": 412,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getMusicByName(String const&, LogicData const*)",
+      "v36_addr": "0x7f1ac4",
+      "v36_size": 36,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getShockEffect()",
+      "v36_addr": "0x8baf08",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getSkillByName(String const&, LogicData const*)",
+      "v36_addr": "0x8d80f4",
+      "v36_size": 36,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getSoundByName(String const&, LogicData const*)",
+      "v36_addr": "0x32c23c",
+      "v36_size": 36,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getThemeByName(String const&, LogicData const*)",
+      "v36_addr": "0x72ce9c",
+      "v36_size": 36,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::validateTables()",
+      "v36_addr": "0x24f2a0",
+      "v36_size": 4,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getBaseTileData()",
+      "v36_addr": "0x2483a0",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getEffectByName(String const&, LogicData const*)",
+      "v36_addr": "0x93cec4",
+      "v36_size": 36,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getItemCountFor(LogicHomeMode const*, int, LogicCharacterData const*)",
+      "v36_addr": "0x380280",
+      "v36_size": 400,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getLocaleByName(String const&, LogicData const*)",
+      "v36_addr": "0x4f72b4",
+      "v36_size": 36,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getOpenTileData()",
+      "v36_addr": "0x24c3ec",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getResourceById(int)",
+      "v36_addr": "0x754aa0",
+      "v36_size": 32,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getSlowedEffect()",
+      "v36_addr": "0x1fb40c",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getTableMutable(int)",
+      "v36_addr": "0x292ebc",
+      "v36_size": 20,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::isHeroAvailable(LogicHomeMode const*, LogicCharacterData const*)",
+      "v36_addr": "0x72a180",
+      "v36_size": 120,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::isHeroAvailable(LogicCharacterData const*, ReleaseEntry*)",
+      "v36_addr": "0x339610",
+      "v36_size": 88,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::isItemAvailable(LogicCardData const*, ReleaseEntry*)",
+      "v36_addr": "0x9613e8",
+      "v36_size": 88,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::isItemAvailable(LogicHomeMode const*, LogicCardData const*)",
+      "v36_addr": "0x27eea8",
+      "v36_size": 120,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::createReferences()",
+      "v36_addr": "0x73aae0",
+      "v36_size": 7364,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::destructInstance()",
+      "v36_addr": "0x85fefc",
+      "v36_size": 1584,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getAllAnimations(LogicArrayList<LogicAnimationData const*>*)",
+      "v36_addr": "0x530498",
+      "v36_size": 376,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getBerserkEffect()",
+      "v36_addr": "0x37e72c",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getBigHealEffect()",
+      "v36_addr": "0x563ec0",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getBurningEffect()",
+      "v36_addr": "0x10c920",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getClientGlobals()",
+      "v36_addr": "0x58869c",
+      "v36_size": 20,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getCrateTileData()",
+      "v36_addr": "0x690994",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getDataFromTable(int, int)",
+      "v36_addr": "0x354d98",
+      "v36_size": 56,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getFirstWinsData()",
+      "v36_addr": "0x7a1110",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getItemWithIndex(LogicHomeMode const*, int, LogicCharacterData const*, int)",
+      "v36_addr": "0x84da44",
+      "v36_size": 436,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getOverTimeMusic()",
+      "v36_addr": "0x3357e0",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getSilenceEffect()",
+      "v36_addr": "0x1face0",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getSpeedUpEffect()",
+      "v36_addr": "0x5778dc",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getStunnedEffect()",
+      "v36_addr": "0x3482bc",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getUnlockCardFor(LogicCharacterData const*)",
+      "v36_addr": "0x56bf50",
+      "v36_size": 148,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getUpgradiumData()",
+      "v36_addr": "0x12e9f8",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getWaterTileData()",
+      "v36_addr": "0x1e3b04",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::isEmoteAvailable(LogicHomeMode const*, LogicEmoteData const*)",
+      "v36_addr": "0x860900",
+      "v36_size": 136,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::isEmoteAvailable(LogicEmoteData const*, ReleaseEntry*)",
+      "v36_addr": "0x27fdec",
+      "v36_size": 104,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::searchReferences(LogicData const*)",
+      "v36_addr": "0x5b605c",
+      "v36_size": 84,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::constructInstance()",
+      "v36_addr": "0x102538",
+      "v36_size": 32,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::findByCountryCode(String const&)",
+      "v36_addr": "0x38cf10",
+      "v36_size": 156,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getClosestGemPack(int)",
+      "v36_addr": "0x8b3aec",
+      "v36_size": 200,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getDefaultCountry()",
+      "v36_addr": "0x207ed4",
+      "v36_size": 396,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getLocationByName(String const&, LogicData const*)",
+      "v36_addr": "0x49408c",
+      "v36_size": 36,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getPoisonedEffect()",
+      "v36_addr": "0x3af820",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getResourceByName(String const&, LogicData const*)",
+      "v36_addr": "0x5a7b3c",
+      "v36_size": 36,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getShopItemByType(int)",
+      "v36_addr": "0x5a6b60",
+      "v36_size": 132,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getSkinConfByName(String const&, LogicData const*)",
+      "v36_addr": "0x8b50a0",
+      "v36_size": 36,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getStarPointsData()",
+      "v36_addr": "0x8ab78c",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getTotalHeroCount(LogicHomeMode const*)",
+      "v36_addr": "0x4a508c",
+      "v36_size": 332,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getTotalHeroCount(LogicHomeMode const*, int, bool)",
+      "v36_addr": "0x79d4d8",
+      "v36_size": 496,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getUltiGainEffect()",
+      "v36_addr": "0x593cf8",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getAccessoryByName(String const&, LogicData const*)",
+      "v36_addr": "0x8b506c",
+      "v36_size": 36,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getAllPlayerEmotes(LogicArrayList<LogicEmoteData const*>*, VanityItems*)",
+      "v36_addr": "0x90c2e8",
+      "v36_size": 504,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getAnimationByName(String const&, LogicData const*)",
+      "v36_addr": "0x48b254",
+      "v36_size": 36,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getBackButtonSound()",
+      "v36_addr": "0x607fec",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getCardForMetaType(LogicCharacterData const*, int)",
+      "v36_addr": "0x5fb77c",
+      "v36_size": 184,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getCarryableByName(String const&, LogicData const*)",
+      "v36_addr": "0x224a94",
+      "v36_size": 36,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getChallengeByType(int)",
+      "v36_addr": "0x5e95dc",
+      "v36_size": 120,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getCharacterByName(String const&, LogicData const*)",
+      "v36_addr": "0x37612c",
+      "v36_size": 36,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getEmotesForBundle(LogicArrayList<LogicEmoteData const*>&, LogicEmoteBundleData const*)",
+      "v36_addr": "0x83ce08",
+      "v36_size": 396,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getHealingTileData()",
+      "v36_addr": "0x75a200",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getHealthBarByName(String const&, LogicData const*)",
+      "v36_addr": "0x7c9544",
+      "v36_size": 36,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getLaserBallEffect()",
+      "v36_addr": "0x58f104",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getLowHealthEffect()",
+      "v36_addr": "0x6c1b44",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getRuffsBuffEffect()",
+      "v36_addr": "0x143a2c",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getUltiReadyEffect()",
+      "v36_addr": "0x7d9fb8",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getAreaEffectByName(String const&, LogicData const*)",
+      "v36_addr": "0x45a2ec",
+      "v36_size": 36,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getBuffShieldEffect()",
+      "v36_addr": "0x834f00",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getCloseButtonSound()",
+      "v36_addr": "0x5b230c",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getDefaultNameColor()",
+      "v36_addr": "0x57f93c",
+      "v36_size": 144,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getObtainableEmotes(LogicArrayList<LogicEmoteData const*>&, LogicHomeMode const*, LogicCharacterData const*)",
+      "v36_addr": "0x1de3e4",
+      "v36_size": 1104,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getProjectileByName(String const&, LogicData const*)",
+      "v36_addr": "0x713b7c",
+      "v36_size": 36,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getRandomHeroForBot(LogicRandom*, bool, LogicArrayList<LogicCharacterData const*>*, int)",
+      "v36_addr": "0x108414",
+      "v36_size": 1308,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getRandomHeroUnlock(LogicHomeMode const*, LogicRandom*)",
+      "v36_addr": "0x13624c",
+      "v36_size": 1052,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getSkinByInstanceId(int)",
+      "v36_addr": "0x12da9c",
+      "v36_size": 32,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getSuddenDeathMusic()",
+      "v36_addr": "0x3780d4",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getEmoteBundleByName(String const&, LogicData const*)",
+      "v36_addr": "0x2812e4",
+      "v36_size": 36,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getFirstUnlockedHero(LogicClientAvatar const*)",
+      "v36_addr": "0x8f75c4",
+      "v36_size": 172,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getInvisibleTileData()",
+      "v36_addr": "0x223058",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getMusicByFrameLabel(String const&)",
+      "v36_addr": "0x109b2c",
+      "v36_size": 140,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getPictoEmoteForSkin(LogicSkinData const*)",
+      "v36_addr": "0x1e3e94",
+      "v36_size": 204,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getSiegeBoltTileData()",
+      "v36_addr": "0x8e4f3c",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getSkillByInstanceID(int)",
+      "v36_addr": "0xd9f50",
+      "v36_size": 92,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getSoundByFrameLabel(String const&)",
+      "v36_addr": "0x749928",
+      "v36_size": 140,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getSpawnShieldEffect()",
+      "v36_addr": "0x1e4a94",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getTeleport1TileData()",
+      "v36_addr": "0x127c94",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getTeleport2TileData()",
+      "v36_addr": "0x25e36c",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getTeleport3TileData()",
+      "v36_addr": "0x264100",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getTeleport4TileData()",
+      "v36_addr": "0x5a681c",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getUltiChangedEffect()",
+      "v36_addr": "0x75ac64",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getAllianceRoleByName(String const&, LogicData*)",
+      "v36_addr": "0x6a5ab0",
+      "v36_size": 36,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getAutoHealAreaEffect()",
+      "v36_addr": "0x517e64",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getBulletBounceEffect()",
+      "v36_addr": "0x4ad42c",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getCollectSpeedEffect()",
+      "v36_addr": "0x4cd010",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getHealOverTimeEffect(int)",
+      "v36_addr": "0xd0738",
+      "v36_size": 60,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getHealSuppressEffect()",
+      "v36_addr": "0x4f1ed8",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getLaserBallEffectFly()",
+      "v36_addr": "0x5eaeac",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getNumProjectileDatas()",
+      "v36_addr": "0x14f5d8",
+      "v36_size": 28,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getSkinCampaignByName(String const&, LogicData const*)",
+      "v36_addr": "0x7fd64c",
+      "v36_size": 36,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getCollectPointsEffect()",
+      "v36_addr": "0x806038",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getCollectShieldEffect()",
+      "v36_addr": "0x24c3dc",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getColorGradientByName(String const&, LogicData const*)",
+      "v36_addr": "0xd07e8",
+      "v36_size": 36,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getDefaultEmoteForSkin(int, LogicSkinData const*)",
+      "v36_addr": "0x5d7720",
+      "v36_size": 412,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getLaserBallEffectUlti()",
+      "v36_addr": "0x3312c0",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getLaserBallGoalEffect()",
+      "v36_addr": "0x8e6568",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getLocationThemeByName(String const&, LogicData const*)",
+      "v36_addr": "0x5ae2c4",
+      "v36_size": 36,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getPlasmoidSpawnEffect()",
+      "v36_addr": "0x7c1bdc",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getProtectedKingEffect()",
+      "v36_addr": "0x48e3bc",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getSpawnPoint1TileData()",
+      "v36_addr": "0x711828",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getSpawnPoint2TileData()",
+      "v36_addr": "0x57ef58",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getSpringBoardTileData()",
+      "v36_addr": "0x506a5c",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getVeryLowHealthEffect()",
+      "v36_addr": "0x3c5878",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getWeaklyStunnedEffect()",
+      "v36_addr": "0x415a10",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getBillingPackageByName(String const&, LogicData*)",
+      "v36_addr": "0x271964",
+      "v36_size": 36,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getCollectBerserkEffect()",
+      "v36_addr": "0x7c6abc",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getCollectCleanseEffect()",
+      "v36_addr": "0x12b0d0",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getCollectPowerupEffect()",
+      "v36_addr": "0x3bd470",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getGoldSkinCampaignData()",
+      "v36_addr": "0x716a7c",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getLaserBallThrowEffect()",
+      "v36_addr": "0x5f79f4",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getRankedRankDataByRank(int)",
+      "v36_addr": "0x205cd0",
+      "v36_size": 132,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getShieldEffectBossRace()",
+      "v36_addr": "0x244684",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getSnakeOilPoisonEffect(int)",
+      "v36_addr": "0x4e0d90",
+      "v36_size": 60,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getTutorialLocationData()",
+      "v36_addr": "0x8555e4",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getUltiButtonClickSound()",
+      "v36_addr": "0x736bc4",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::createDefaultDisplayData(String const&)",
+      "v36_addr": "0x86e5b8",
+      "v36_size": 212,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getCharacterByInstanceId(int)",
+      "v36_addr": "0x5d731c",
+      "v36_size": 32,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getGameModeVariationData(int)",
+      "v36_addr": "0x84de30",
+      "v36_size": 92,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getHeroLvlUpMaterialData()",
+      "v36_addr": "0x1e1ab8",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getParticleEmitterByName(String const&, LogicData const*)",
+      "v36_addr": "0x8b415c",
+      "v36_size": 36,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getPoisonedCrippleEffect()",
+      "v36_addr": "0x75cdf8",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getReSpawnPoint1TileData()",
+      "v36_addr": "0x56be68",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getReSpawnPoint2TileData()",
+      "v36_addr": "0xde13c",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getUltiButtonCancelSound()",
+      "v36_addr": "0x865dd4",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getAllHeroEmotesForPlayer(LogicArrayList<LogicEmoteData const*>*, LogicCharacterData const*, VanityItems*)",
+      "v36_addr": "0x9133c4",
+      "v36_size": 468,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getAllSkinsForSkinSection(LogicSeasonalSkinSectionData const*, LogicArrayList<LogicSkinData const*>*)",
+      "v36_addr": "0x90b7a4",
+      "v36_size": 428,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getConsumableShieldEffect()",
+      "v36_addr": "0x6fb228",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getDefaultPlayerThumbnail()",
+      "v36_addr": "0x71b20c",
+      "v36_size": 32,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getFirstMessageDataByType(int)",
+      "v36_addr": "0x72f914",
+      "v36_size": 120,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getIntervalDamageTileData()",
+      "v36_addr": "0x456e64",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getLaserBallCatchedEffect()",
+      "v36_addr": "0x4983d8",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getLaserBallEffectFlyHigh()",
+      "v36_addr": "0x1367cc",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getLaserBallEffectFlyUlti()",
+      "v36_addr": "0x134e98",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getPictoEmoteForCharacter(LogicCharacterData const*)",
+      "v36_addr": "0x3b7d04",
+      "v36_size": 204,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getProjectileByInstanceId(int)",
+      "v36_addr": "0x50cff4",
+      "v36_size": 32,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getRankedSkinCampaignData()",
+      "v36_addr": "0x5d2530",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getSilverSkinCampaignData()",
+      "v36_addr": "0x5aefec",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getDefaultButtonClickSound()",
+      "v36_addr": "0x5f7cb0",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getGameModeVariationByName(String const&, LogicData*)",
+      "v36_addr": "0x5ac7dc",
+      "v36_size": 36,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getLocalNotificationByName(String const&, LogicData const*)",
+      "v36_addr": "0x53fdb8",
+      "v36_size": 36,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getNonConstAnimationByName(String const&, LogicData const*)",
+      "v36_addr": "0x7bf348",
+      "v36_size": 36,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getTotalHeroCountForAvatar(LogicHomeMode const*)",
+      "v36_addr": "0x91655c",
+      "v36_size": 648,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getTotalHeroCountForAvatar(LogicHomeMode const*, int, bool)",
+      "v36_addr": "0x541874",
+      "v36_size": 732,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getArchivedSkinCampaignData()",
+      "v36_addr": "0x67dc54",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getDefaultEmoteForCharacter(int, LogicCharacterData const*, bool)",
+      "v36_addr": "0x49d6b0",
+      "v36_size": 460,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getIncreaseHealthAreaEffect()",
+      "v36_addr": "0x72bcec",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getLaserBallThrowUltiEffect()",
+      "v36_addr": "0x84f724",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getTotalHeroCountForProfile(LogicHomeMode const*, PlayerProfile*)",
+      "v36_addr": "0x1302c4",
+      "v36_size": 424,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getAllDefaultRankedLocations(LogicArrayList<LogicLocationData const*>*)",
+      "v36_addr": "0x23fe34",
+      "v36_size": 428,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getAllEmotesByBattleCategory(LogicArrayList<LogicEmoteData const*>*, LogicCharacterData const*, int)",
+      "v36_addr": "0x53f894",
+      "v36_size": 452,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getSeasonalSkinSectionByMode(int)",
+      "v36_addr": "0x2a3f7c",
+      "v36_size": 132,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getSeasonalSkinSectionByName(String const&, LogicData*)",
+      "v36_addr": "0x5a5318",
+      "v36_size": 36,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getPlayerMapEnvironmentByName(String const&, LogicData const*)",
+      "v36_addr": "0x520558",
+      "v36_size": 36,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getDataByIdDontCrashIfNotFound(int)",
+      "v36_addr": "0x82e2fc",
+      "v36_size": 80,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getLaserBallCatchedOtherEffect()",
+      "v36_addr": "0x134630",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getHealWithMainAttackAreaEffect()",
+      "v36_addr": "0x10bfd8",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getSeasonalSkinSectionByCampaign(LogicSkinCampaignData const*)",
+      "v36_addr": "0x55d5e0",
+      "v36_size": 184,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getFirstEmoteForCharacterByEmoteType(int, LogicCharacterData const*)",
+      "v36_addr": "0x1e1eec",
+      "v36_size": 224,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getFirstEmoteForCharacterByBattleCategory(int, LogicCharacterData const*)",
+      "v36_addr": "0x8661d4",
+      "v36_size": 164,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::absDiff(int, int)",
+      "v36_addr": "0x1cddcc",
+      "v36_size": 12,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::hasHero(LogicClientAvatar const*, LogicCharacterData const*)",
+      "v36_addr": "0xf2a7c",
+      "v36_size": 132,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getAddon(LogicCardData const*)",
+      "v36_addr": "0x25a928",
+      "v36_size": 120,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getTable(int)",
+      "v36_addr": "0x4f2458",
+      "v36_size": 20,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::isLoaded()",
+      "v36_addr": "0x27b644",
+      "v36_size": 20,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicDataTables::getHeroes(LogicArrayList<LogicCharacterData const*>&, LogicClientAvatar const*, int)",
+      "v36_addr": "0x839a9c",
+      "v36_size": 512,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    }
+  ],
+  "obs_accessors": [
+    {
+      "name": "LogicCharacterServer::getBotSkill()",
+      "v36_addr": "0xfee68",
+      "v36_size": 48,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicCharacterServer::getPowerLevel() const",
+      "v36_addr": "0x38c7fc",
+      "v36_size": 8,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicCharacterServer::getCharacterData() const",
+      "v36_addr": "0x108ea8",
+      "v36_size": 4,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicCharacterServer::getActiveSkillShield() const",
+      "v36_addr": "0x134f58",
+      "v36_size": 112,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicCharacterServer::getState() const",
+      "v36_addr": "0x32a6d0",
+      "v36_size": 8,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicCharacterServer::isMoving() const",
+      "v36_addr": "0x3c01a0",
+      "v36_size": 40,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicGameObjectServer::getGlobalID() const",
+      "v36_addr": "0x82c034",
+      "v36_size": 8,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicGameObjectServer::getPosition() const",
+      "v36_addr": "0x44d6c4",
+      "v36_size": 8,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicGameObjectServer::getX() const",
+      "v36_addr": "0x7fc5dc",
+      "v36_size": 8,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicGameObjectServer::getY() const",
+      "v36_addr": "0x7587ac",
+      "v36_size": 8,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicGameObjectServer::getTileX() const",
+      "v36_addr": "0x4dd3e0",
+      "v36_size": 28,
+      "n_consts": 1,
+      "v29_addr": "0x22d440",
+      "shared_consts": [
+        "0x1b4e81b5"
+      ],
+      "n_shared": 1,
+      "score": 0.071,
+      "confidence": "MEDIUM"
+    },
+    {
+      "name": "LogicGameObjectServer::getTileY() const",
+      "v36_addr": "0x23cf90",
+      "v36_size": 28,
+      "n_consts": 1,
+      "v29_addr": "0x22d440",
+      "shared_consts": [
+        "0x1b4e81b5"
+      ],
+      "n_shared": 1,
+      "score": 0.071,
+      "confidence": "MEDIUM"
+    }
+  ],
+  "obs_writers": [
+    {
+      "name": "LogicCharacterServer::setMaxHealth(int)",
+      "v36_addr": "0x812fcc",
+      "v36_size": 16,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    },
+    {
+      "name": "LogicCharacterServer::setState(int, int)",
+      "v36_addr": "0x281960",
+      "v36_size": 32,
+      "n_consts": 0,
+      "v29_addr": null,
+      "confidence": "UNMATCHED_no_const"
+    }
+  ]
+}

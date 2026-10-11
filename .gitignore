@@ -1,0 +1,22 @@
+# Supercell's files and everything derived from them: never publish (readers bring their own APK)
+apk/
+root_t720/
+harness/libs/
+harness/libs36/
+tools/viewer/gfx/
+*.so
+*.apk
+*.csv.gz
+# build outputs and third-party binaries
+harness/driver
+harness/hostprobe
+tools/frida-server
+# large local data: training runs, replays, caches
+runs/
+scratch/
+__pycache__/
+*.pyc
+
+# private working notes (kept locally, not published)
+CLAUDE.md
+docs/handoff.md

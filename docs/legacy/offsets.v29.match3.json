@@ -1,0 +1,340 @@
+{
+  "_ZN15LogicDataTables17constructInstanceEv": {
+    "v36": "0x102538",
+    "name": "_ZN15LogicDataTables17constructInstanceEv",
+    "nsrc": 8,
+    "nanchor": 0,
+    "top": [],
+    "margin": 0.0,
+    "note": "ANCHORLESS -> use call-graph"
+  },
+  "_ZN14LogicResources29createDataTableResourcesArrayEv": {
+    "v36": "0x3a3f4c",
+    "name": "_ZN14LogicResources29createDataTableResourcesArrayEv",
+    "nsrc": 4338,
+    "nanchor": 0,
+    "top": [],
+    "margin": 0.0,
+    "note": "ANCHORLESS -> use call-graph"
+  },
+  "_ZNK22LogicDataTableResource11getFileNameEv": {
+    "v36": "0x7cfa0c",
+    "name": "_ZNK22LogicDataTableResource11getFileNameEv",
+    "nsrc": 2,
+    "nanchor": 0,
+    "top": [],
+    "margin": 0.0,
+    "note": "ANCHORLESS -> use call-graph"
+  },
+  "_ZN7CSVNodeC2ERK6String": {
+    "v36": "0x573754",
+    "name": "_ZN7CSVNodeC2ERK6String",
+    "nsrc": 45,
+    "nanchor": 0,
+    "top": [],
+    "margin": 0.0,
+    "note": "ANCHORLESS -> use call-graph"
+  },
+  "_ZN14LogicResources4loadEPK14LogicArrayListIP22LogicDataTableResourceEiPK7CSVNodePK15LogicJSONObjectb": {
+    "v36": "0x2802c4",
+    "name": "_ZN14LogicResources4loadEPK14LogicArrayListIP22LogicDataTableResourceEiPK7CSVNodePK15LogicJSONObjectb",
+    "nsrc": 75,
+    "nanchor": 0,
+    "top": [],
+    "margin": 0.0,
+    "note": "ANCHORLESS -> use call-graph"
+  },
+  "_ZN15LogicDataTables16createReferencesEv": {
+    "v36": "0x73aae0",
+    "name": "_ZN15LogicDataTables16createReferencesEv",
+    "nsrc": 1841,
+    "nanchor": 0,
+    "top": [],
+    "margin": 0.0,
+    "note": "ANCHORLESS -> use call-graph"
+  },
+  "_ZN15LogicDataTables8isLoadedEv": {
+    "v36": "0x27b644",
+    "name": "_ZN15LogicDataTables8isLoadedEv",
+    "nsrc": 5,
+    "nanchor": 0,
+    "top": [],
+    "margin": 0.0,
+    "note": "ANCHORLESS -> use call-graph"
+  },
+  "_ZN15LogicDataTables8getTableEi": {
+    "v36": "0x4f2458",
+    "name": "_ZN15LogicDataTables8getTableEi",
+    "nsrc": 5,
+    "nanchor": 0,
+    "top": [],
+    "margin": 0.0,
+    "note": "ANCHORLESS -> use call-graph"
+  },
+  "_ZN15LogicDataTables10getGlobalsEv": {
+    "v36": "0x6fd8cc",
+    "name": "_ZN15LogicDataTables10getGlobalsEv",
+    "nsrc": 5,
+    "nanchor": 0,
+    "top": [],
+    "margin": 0.0,
+    "note": "ANCHORLESS -> use call-graph"
+  },
+  "_ZN6StringC2EPKc": {
+    "v36": "0x570c30",
+    "name": "_ZN6StringC2EPKc",
+    "nsrc": 11,
+    "nanchor": 0,
+    "top": [],
+    "margin": 0.0,
+    "note": "ANCHORLESS -> use call-graph"
+  },
+  "_ZN6StringD2Ev": {
+    "v36": "0x32a0a8",
+    "name": "_ZN6StringD2Ev",
+    "nsrc": 16,
+    "nanchor": 0,
+    "top": [],
+    "margin": 0.0,
+    "note": "ANCHORLESS -> use call-graph"
+  },
+  "_ZNK6String13getByteLengthEv": {
+    "v36": "0x221aac",
+    "name": "_ZNK6String13getByteLengthEv",
+    "nsrc": 2,
+    "nanchor": 0,
+    "top": [],
+    "margin": 0.0,
+    "note": "ANCHORLESS -> use call-graph"
+  },
+  "_ZN6String11setContentsEPKc": {
+    "v36": "0x9169e8",
+    "name": "_ZN6String11setContentsEPKc",
+    "nsrc": 75,
+    "nanchor": 0,
+    "top": [],
+    "margin": 0.0,
+    "note": "ANCHORLESS -> use call-graph"
+  },
+  "_ZN21LogicBattleModeServerC2Eii": {
+    "v36": "0x3bf880",
+    "name": "_ZN21LogicBattleModeServerC2Eii",
+    "nsrc": 284,
+    "nanchor": 0,
+    "top": [],
+    "margin": 0.0,
+    "note": "ANCHORLESS -> use call-graph"
+  },
+  "_ZN17LogicGamePlayUtil26getPlayerCountWithGameModeEi": {
+    "v36": "0x8ed0a4",
+    "name": "_ZN17LogicGamePlayUtil26getPlayerCountWithGameModeEi",
+    "nsrc": 14,
+    "nanchor": 0,
+    "top": [],
+    "margin": 0.0,
+    "note": "ANCHORLESS -> use call-graph"
+  },
+  "_ZN21LogicBattleModeServer13setRandomSeedEi": {
+    "v36": "0x5d8398",
+    "name": "_ZN21LogicBattleModeServer13setRandomSeedEi",
+    "nsrc": 3,
+    "nanchor": 0,
+    "top": [],
+    "margin": 0.0,
+    "note": "ANCHORLESS -> use call-graph"
+  },
+  "_ZN21LogicBattleModeServer11setLocationEPK17LogicLocationData": {
+    "v36": "0x3aabe8",
+    "name": "_ZN21LogicBattleModeServer11setLocationEPK17LogicLocationData",
+    "nsrc": 31,
+    "nanchor": 0,
+    "top": [],
+    "margin": 0.0,
+    "note": "ANCHORLESS -> use call-graph"
+  },
+  "_ZN28LogicGameObjectManagerServer24setLogicBattleModeServerEP21LogicBattleModeServer": {
+    "v36": "0x8c4640",
+    "name": "_ZN28LogicGameObjectManagerServer24setLogicBattleModeServerEP21LogicBattleModeServer",
+    "nsrc": 2,
+    "nanchor": 0,
+    "top": [],
+    "margin": 0.0,
+    "note": "ANCHORLESS -> use call-graph"
+  },
+  "_ZN21LogicBattleModeServer15generateTileMapEiii": {
+    "v36": "0x84d504",
+    "name": "_ZN21LogicBattleModeServer15generateTileMapEiii",
+    "nsrc": 31,
+    "nanchor": 0,
+    "top": [],
+    "margin": 0.0,
+    "note": "ANCHORLESS -> use call-graph"
+  },
+  "_ZN9LogicLongC2Ev": {
+    "v36": "0x4c4f2c",
+    "name": "_ZN9LogicLongC2Ev",
+    "nsrc": 4,
+    "nanchor": 0,
+    "top": [],
+    "margin": 0.0,
+    "note": "ANCHORLESS -> use call-graph"
+  },
+  "_ZN15LogicDataTables24createDefaultDisplayDataERK6String": {
+    "v36": "0x86e5b8",
+    "name": "_ZN15LogicDataTables24createDefaultDisplayDataERK6String",
+    "nsrc": 53,
+    "nanchor": 0,
+    "top": [],
+    "margin": 0.0,
+    "note": "ANCHORLESS -> use call-graph"
+  },
+  "_ZN11StringTable9getStringEPKc": {
+    "v36": "0x80a8cc",
+    "name": "_ZN11StringTable9getStringEPKc",
+    "nsrc": 107,
+    "nanchor": 0,
+    "top": [],
+    "margin": 0.0,
+    "note": "ANCHORLESS -> use call-graph"
+  },
+  "_ZN21LogicBattleModeServer9addPlayerEP9LogicLongPK18LogicCharacterDataP17LogicHeroUpgradesP17LogicBattleEmotesiP17PlayerDisplayDatabPK13LogicSkinData": {
+    "v36": "0x70b558",
+    "name": "_ZN21LogicBattleModeServer9addPlayerEP9LogicLongPK18LogicCharacterDataP17LogicHeroUpgradesP17LogicBattleEmotesiP17PlayerDisplayDatabPK13LogicSkinData",
+    "nsrc": 51,
+    "nanchor": 0,
+    "top": [],
+    "margin": 0.0,
+    "note": "ANCHORLESS -> use call-graph"
+  },
+  "_ZN21LogicBattleModeServer16setBotDifficultyEi": {
+    "v36": "0x292104",
+    "name": "_ZN21LogicBattleModeServer16setBotDifficultyEi",
+    "nsrc": 2,
+    "nanchor": 0,
+    "top": [],
+    "margin": 0.0,
+    "note": "ANCHORLESS -> use call-graph"
+  },
+  "_ZN21LogicBattleModeServer17setRaidDifficultyEi": {
+    "v36": "0x6037cc",
+    "name": "_ZN21LogicBattleModeServer17setRaidDifficultyEi",
+    "nsrc": 2,
+    "nanchor": 0,
+    "top": [],
+    "margin": 0.0,
+    "note": "ANCHORLESS -> use call-graph"
+  },
+  "_ZN21LogicBattleModeServer16addEventModifierEi": {
+    "v36": "0x39edec",
+    "name": "_ZN21LogicBattleModeServer16addEventModifierEi",
+    "nsrc": 745,
+    "nanchor": 1,
+    "top": [
+      {
+        "v29": "0x14e5a0",
+        "score": 9.57,
+        "cov": 0.129,
+        "shared": 1,
+        "anchor": 9.51
+      },
+      {
+        "v29": "0x2218b8",
+        "score": 9.546,
+        "cov": 0.082,
+        "shared": 1,
+        "anchor": 9.51
+      }
+    ],
+    "margin": 0.023
+  },
+  "_ZNK20LogicCharacterServer8getStateEv": {
+    "v36": "0x32a6d0",
+    "name": "_ZNK20LogicCharacterServer8getStateEv",
+    "nsrc": 2,
+    "nanchor": 0,
+    "top": [],
+    "margin": 0.0,
+    "note": "ANCHORLESS -> use call-graph"
+  },
+  "_ZNK21LogicGameObjectServer4getXEv": {
+    "v36": "0x7fc5dc",
+    "name": "_ZNK21LogicGameObjectServer4getXEv",
+    "nsrc": 2,
+    "nanchor": 0,
+    "top": [],
+    "margin": 0.0,
+    "note": "ANCHORLESS -> use call-graph"
+  },
+  "_ZNK21LogicGameObjectServer4getYEv": {
+    "v36": "0x7587ac",
+    "name": "_ZNK21LogicGameObjectServer4getYEv",
+    "nsrc": 2,
+    "nanchor": 0,
+    "top": [],
+    "margin": 0.0,
+    "note": "ANCHORLESS -> use call-graph"
+  },
+  "_ZNK21LogicGameObjectServer11getGlobalIDEv": {
+    "v36": "0x82c034",
+    "name": "_ZNK21LogicGameObjectServer11getGlobalIDEv",
+    "nsrc": 2,
+    "nanchor": 0,
+    "top": [],
+    "margin": 0.0,
+    "note": "ANCHORLESS -> use call-graph"
+  },
+  "_ZN20LogicCharacterServer11getBotSkillEv": {
+    "v36": "0xfee68",
+    "name": "_ZN20LogicCharacterServer11getBotSkillEv",
+    "nsrc": 12,
+    "nanchor": 0,
+    "top": [],
+    "margin": 0.0,
+    "note": "ANCHORLESS -> use call-graph"
+  },
+  "_ZNK21LogicBattleModeServer7getTickEv": {
+    "v36": "0x913168",
+    "name": "_ZNK21LogicBattleModeServer7getTickEv",
+    "nsrc": 2,
+    "nanchor": 0,
+    "top": [],
+    "margin": 0.0,
+    "note": "ANCHORLESS -> use call-graph"
+  },
+  "_ZN21LogicBattleModeServer12getTeamScoreEib": {
+    "v36": "0x513c88",
+    "name": "_ZN21LogicBattleModeServer12getTeamScoreEib",
+    "nsrc": 32,
+    "nanchor": 0,
+    "top": [],
+    "margin": 0.0,
+    "note": "ANCHORLESS -> use call-graph"
+  },
+  "_ZNK21LogicBattleModeServer26isGameOverOrRoundResettingEv": {
+    "v36": "0x5039fc",
+    "name": "_ZNK21LogicBattleModeServer26isGameOverOrRoundResettingEv",
+    "nsrc": 2,
+    "nanchor": 0,
+    "top": [],
+    "margin": 0.0,
+    "note": "ANCHORLESS -> use call-graph"
+  },
+  "_ZNK22LogicDataTableResource13getTableIndexEv": {
+    "v36": "0x109458",
+    "name": "_ZNK22LogicDataTableResource13getTableIndexEv",
+    "nsrc": 2,
+    "nanchor": 0,
+    "top": [],
+    "margin": 0.0,
+    "note": "ANCHORLESS -> use call-graph"
+  },
+  "_ZNK7CSVNode5cloneEv": {
+    "v36": "0x2834a8",
+    "name": "_ZNK7CSVNode5cloneEv",
+    "nsrc": 198,
+    "nanchor": 0,
+    "top": [],
+    "margin": 0.0,
+    "note": "ANCHORLESS -> use call-graph"
+  }
+}

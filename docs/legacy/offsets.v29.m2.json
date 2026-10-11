@@ -1,0 +1,360 @@
+{
+  "battle_lifecycle": [
+    {
+      "name": "LogicBattleModeServer::tickUpdate(int)",
+      "v36_addr": "0x1304b0",
+      "v29_addr": "0x4a6b0",
+      "score": 1.44,
+      "margin": 0.0,
+      "nc36": 1,
+      "nc29": 1,
+      "confidence": "UNMATCHED"
+    },
+    {
+      "name": "LogicBattleModeServer::setLocation(LogicLocationData const*)",
+      "v36_addr": "0x3aabe8",
+      "v29_addr": "0x54e28",
+      "score": 17.2,
+      "margin": 0.0,
+      "nc36": 4,
+      "nc29": 19,
+      "confidence": "MEDIUM"
+    },
+    {
+      "name": "LogicBattleModeServer::getTeamScore(int, bool)",
+      "v36_addr": "0x513c88",
+      "v29_addr": "0x54e28",
+      "score": 19.29,
+      "margin": 0.0,
+      "nc36": 0,
+      "nc29": 19,
+      "confidence": "MEDIUM"
+    },
+    {
+      "name": "LogicBattleModeServer::forceGameOver()",
+      "v36_addr": "0x7bf9d8",
+      "v29_addr": "0x52fb1c",
+      "score": 8.15,
+      "margin": 0.0,
+      "nc36": 0,
+      "nc29": 0,
+      "confidence": "MEDIUM"
+    },
+    {
+      "name": "LogicBattleModeServer::getCurrentMVP()",
+      "v36_addr": "0x4dd6b8",
+      "v29_addr": "0x54e28",
+      "score": 17.33,
+      "margin": 0.0,
+      "nc36": 1,
+      "nc29": 19,
+      "confidence": "MEDIUM"
+    },
+    {
+      "name": "LogicBattleModeServer::setRandomSeed(int)",
+      "v36_addr": "0x5d8398",
+      "v29_addr": "0x4968c",
+      "score": 2.11,
+      "margin": 0.0,
+      "nc36": 0,
+      "nc29": 10,
+      "confidence": "UNMATCHED"
+    },
+    {
+      "name": "LogicBattleModeServer::addGameObjects(int, bool, LogicArrayList<LogicCharacterData const*>*, int, LogicArrayList<int>*)",
+      "v36_addr": "0x3274e4",
+      "v29_addr": "0x495596",
+      "score": 968.58,
+      "margin": 37.58,
+      "nc36": 104,
+      "nc29": 508,
+      "confidence": "HIGH"
+    },
+    {
+      "name": "LogicBattleModeServer::executeOneTick(LogicArrayList<BitStream*>*, BitStream*)",
+      "v36_addr": "0x8a26d8",
+      "v29_addr": "0x47ccb4",
+      "score": 223.41,
+      "margin": 2.93,
+      "nc36": 20,
+      "nc29": 301,
+      "confidence": "HIGH"
+    },
+    {
+      "name": "LogicBattleModeServer::generateTileMap(int, int, int)",
+      "v36_addr": "0x84d504",
+      "v29_addr": "0x54e28",
+      "score": 25.06,
+      "margin": 0.0,
+      "nc36": 2,
+      "nc29": 19,
+      "confidence": "HIGH"
+    },
+    {
+      "name": "LogicBattleModeServer::setBotDifficulty(int)",
+      "v36_addr": "0x292104",
+      "v29_addr": "0x4968c",
+      "score": 3.59,
+      "margin": 0.0,
+      "nc36": 0,
+      "nc29": 10,
+      "confidence": "MEDIUM"
+    },
+    {
+      "name": "LogicBattleModeServer::handleClientInput(ClientInput*, int)",
+      "v36_addr": "0x75c168",
+      "v29_addr": "0x495596",
+      "score": 277.95,
+      "margin": 26.08,
+      "nc36": 70,
+      "nc29": 508,
+      "confidence": "HIGH"
+    },
+    {
+      "name": "LogicBattleModeServer::addPlayer(LogicLong*, LogicCharacterData const*, LogicHeroUpgrades*, LogicBattleEmotes*, int, PlayerDisplayData*, bool, LogicSkinData const*)",
+      "v36_addr": "0x70b558",
+      "v29_addr": "0x70be0",
+      "score": 40.44,
+      "margin": 0.0,
+      "nc36": 4,
+      "nc29": 47,
+      "confidence": "HIGH"
+    },
+    {
+      "name": "LogicBattleModeServer::spawnHero(LogicCharacterData const*, LogicHeroUpgrades*, int, int, bool)",
+      "v36_addr": "0x4454c8",
+      "v29_addr": "0x495596",
+      "score": 46.85,
+      "margin": 0.0,
+      "nc36": 6,
+      "nc29": 508,
+      "confidence": "HIGH"
+    }
+  ],
+  "command_action": [
+    {
+      "name": "LogicCommand::setExecuteTick(int)",
+      "v36_addr": "0x454f4c",
+      "v29_addr": null,
+      "score": 0,
+      "margin": 0,
+      "nc36": 0,
+      "nc29": null,
+      "confidence": "UNMATCHED"
+    },
+    {
+      "name": "LogicCommand::decode(ByteStream*)",
+      "v36_addr": "0x509130",
+      "v29_addr": "0x77fe8",
+      "score": 31.92,
+      "margin": 0.0,
+      "nc36": 5,
+      "nc29": 81,
+      "confidence": "HIGH"
+    },
+    {
+      "name": "LogicCommandManager::addCommand(LogicCommand*)",
+      "v36_addr": "0x82f410",
+      "v29_addr": "0x54354",
+      "score": 22.05,
+      "margin": 0.0,
+      "nc36": 2,
+      "nc29": 1,
+      "confidence": "HIGH"
+    },
+    {
+      "name": "LogicCommandManager::createCommand(int)",
+      "v36_addr": "0x45bc30",
+      "v29_addr": "0x495596",
+      "score": 159.21,
+      "margin": 10.66,
+      "nc36": 125,
+      "nc29": 508,
+      "confidence": "HIGH"
+    },
+    {
+      "name": "LogicCommandManager::decodeCommand(ByteStream*, bool, bool)",
+      "v36_addr": "0x1057e4",
+      "v29_addr": "0x77fe8",
+      "score": 39.86,
+      "margin": 0.0,
+      "nc36": 6,
+      "nc29": 81,
+      "confidence": "HIGH"
+    },
+    {
+      "name": "LogicCommandManager::encodeCommand(ChecksumEncoder*, LogicCommand const*)",
+      "v36_addr": "0x6b8128",
+      "v29_addr": "0x51954",
+      "score": 4.14,
+      "margin": 0.0,
+      "nc36": 0,
+      "nc29": 0,
+      "confidence": "MEDIUM"
+    },
+    {
+      "name": "LogicCommandManager::saveCommandToJSON(LogicJSONObject*, LogicCommand const*)",
+      "v36_addr": "0x5d3db0",
+      "v29_addr": "0x54e28",
+      "score": 19.19,
+      "margin": 0.0,
+      "nc36": 9,
+      "nc29": 19,
+      "confidence": "MEDIUM"
+    },
+    {
+      "name": "LogicCommandManager::loadCommandFromJSON(LogicJSONObject const*)",
+      "v36_addr": "0xca1b0",
+      "v29_addr": "0x54e28",
+      "score": 18.71,
+      "margin": 0.0,
+      "nc36": 10,
+      "nc29": 19,
+      "confidence": "MEDIUM"
+    }
+  ],
+  "obs_accessors": [
+    {
+      "name": "LogicCharacterServer::getBotSkill()",
+      "v36_addr": "0xfee68",
+      "v29_addr": "0x97e30",
+      "score": 7.92,
+      "margin": 0.0,
+      "nc36": 2,
+      "nc29": 2,
+      "confidence": "MEDIUM"
+    },
+    {
+      "name": "LogicCharacterServer::getPowerLevel() const",
+      "v36_addr": "0x38c7fc",
+      "v29_addr": null,
+      "score": 0,
+      "margin": 0,
+      "nc36": 0,
+      "nc29": null,
+      "confidence": "UNMATCHED"
+    },
+    {
+      "name": "LogicCharacterServer::getCharacterData() const",
+      "v36_addr": "0x108ea8",
+      "v29_addr": null,
+      "score": 0,
+      "margin": 0,
+      "nc36": 0,
+      "nc29": null,
+      "confidence": "UNMATCHED"
+    },
+    {
+      "name": "LogicCharacterServer::getActiveSkillShield() const",
+      "v36_addr": "0x134f58",
+      "v29_addr": "0x12e9a4",
+      "score": 20.99,
+      "margin": 0.0,
+      "nc36": 2,
+      "nc29": 2,
+      "confidence": "HIGH"
+    },
+    {
+      "name": "LogicCharacterServer::getState() const",
+      "v36_addr": "0x32a6d0",
+      "v29_addr": "0x4a258",
+      "score": 2.6,
+      "margin": 0.0,
+      "nc36": 0,
+      "nc29": 2,
+      "confidence": "UNMATCHED"
+    },
+    {
+      "name": "LogicCharacterServer::isMoving() const",
+      "v36_addr": "0x3c01a0",
+      "v29_addr": "0x497e0",
+      "score": 2.08,
+      "margin": 0.0,
+      "nc36": 2,
+      "nc29": 9,
+      "confidence": "UNMATCHED"
+    },
+    {
+      "name": "LogicGameObjectServer::getGlobalID() const",
+      "v36_addr": "0x82c034",
+      "v29_addr": "0x495dc",
+      "score": 0.61,
+      "margin": 0.0,
+      "nc36": 0,
+      "nc29": 1,
+      "confidence": "UNMATCHED"
+    },
+    {
+      "name": "LogicGameObjectServer::getPosition() const",
+      "v36_addr": "0x44d6c4",
+      "v29_addr": "0x49568",
+      "score": 1.29,
+      "margin": 0.0,
+      "nc36": 0,
+      "nc29": 4,
+      "confidence": "UNMATCHED"
+    },
+    {
+      "name": "LogicGameObjectServer::getX() const",
+      "v36_addr": "0x7fc5dc",
+      "v29_addr": "0x49568",
+      "score": 1.29,
+      "margin": 0.0,
+      "nc36": 0,
+      "nc29": 4,
+      "confidence": "UNMATCHED"
+    },
+    {
+      "name": "LogicGameObjectServer::getY() const",
+      "v36_addr": "0x7587ac",
+      "v29_addr": "0x495dc",
+      "score": 1.46,
+      "margin": 0.0,
+      "nc36": 0,
+      "nc29": 1,
+      "confidence": "UNMATCHED"
+    },
+    {
+      "name": "LogicGameObjectServer::getTileX() const",
+      "v36_addr": "0x4dd3e0",
+      "v29_addr": "0xbe9e8",
+      "score": 20.48,
+      "margin": 0.0,
+      "nc36": 0,
+      "nc29": 0,
+      "confidence": "HIGH"
+    },
+    {
+      "name": "LogicGameObjectServer::getTileY() const",
+      "v36_addr": "0x23cf90",
+      "v29_addr": "0x17a7c0",
+      "score": 20.65,
+      "margin": 0.0,
+      "nc36": 0,
+      "nc29": 0,
+      "confidence": "HIGH"
+    }
+  ],
+  "obs_writers": [
+    {
+      "name": "LogicCharacterServer::setMaxHealth(int)",
+      "v36_addr": "0x812fcc",
+      "v29_addr": "0x54e28",
+      "score": 9.67,
+      "margin": 0.0,
+      "nc36": 0,
+      "nc29": 19,
+      "confidence": "MEDIUM"
+    },
+    {
+      "name": "LogicCharacterServer::setState(int, int)",
+      "v36_addr": "0x281960",
+      "v29_addr": "0x77fe8",
+      "score": 15.18,
+      "margin": 0.0,
+      "nc36": 0,
+      "nc29": 81,
+      "confidence": "MEDIUM"
+    }
+  ]
+}

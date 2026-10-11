@@ -1,0 +1,1294 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Battle Replay</title>
+<style>
+  :root {
+    --bg: #14171c; --panel: #1d2128; --line: #2c323c; --text: #e6e8eb; --muted: #8b939e;
+    --team0: #3b82f6; --team1: #ef4444; --own: #facc15; --gem: #c084fc;
+    --open: #d9c9a3; --wall: #7c5a3a; --wall2: #5b6270; --bush: #3f8f4a; --water: #3b7fc4; --hazard: #b45454;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 13px/1.4 system-ui, sans-serif; }
+  #app { display: flex; gap: 12px; padding: 12px; height: 100vh; }
+  #stage { flex: 1; display: flex; align-items: center; justify-content: center; min-width: 0; position: relative; }
+  canvas { background: #0e1013; border-radius: 6px; image-rendering: pixelated; }
+  #cv3 { position: absolute; visibility: hidden; pointer-events: none; }
+  body.v3d #cv { image-rendering: auto; }
+  #side { width: 330px; flex: none; display: flex; flex-direction: column; gap: 10px; overflow-y: auto; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+  h1 { font-size: 15px; margin: 0 0 4px; }
+  .muted { color: var(--muted); }
+  .score { display: flex; justify-content: space-between; align-items: baseline; font-size: 22px; font-weight: 700; }
+  .score .t0 { color: var(--team0); } .score .t1 { color: var(--team1); }
+  .row { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  button, select { background: #2a303a; color: var(--text); border: 1px solid var(--line); border-radius: 6px;
+                   padding: 5px 10px; font: inherit; cursor: pointer; }
+  button:hover { background: #343b47; }
+  input[type=range] { width: 100%; }
+  .unit { display: grid; grid-template-columns: 10px 1fr 64px; gap: 6px; align-items: center; margin: 3px 0; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .hp { height: 6px; background: #2a303a; border-radius: 3px; overflow: hidden; margin-top: 2px; }
+  .hp > div { height: 100%; background: #4ade80; }
+  .dead { opacity: .4; }
+  #tip { position: absolute; pointer-events: none; background: rgba(20,23,28,.95); border: 1px solid var(--line);
+         border-radius: 6px; padding: 6px 8px; font-size: 12px; display: none; white-space: pre; }
+  #drop { position: fixed; inset: 0; display: none; align-items: center; justify-content: center;
+          background: rgba(0,0,0,.6); font-size: 20px; }
+  .legend span { display: inline-flex; align-items: center; gap: 4px; margin-right: 10px; }
+  .sw { width: 12px; height: 12px; border-radius: 2px; display: inline-block; }
+  kbd { background: #2a303a; border: 1px solid var(--line); border-radius: 4px; padding: 0 4px; font-size: 11px; }
+  .ammo { display: flex; gap: 3px; margin: 3px 0 6px; }
+  .ammo > div, .bar { flex: 1; height: 8px; background: #2a303a; border-radius: 3px; overflow: hidden; }
+  .ammo > div > div { height: 100%; background: #fb923c; }
+  .bar { margin-top: 3px; } .bar > div { height: 100%; background: var(--own); }
+  .bar.full > div { background: #fde047; box-shadow: 0 0 8px #fde047; }
+  .keys { display: grid; grid-template-columns: auto 1fr; gap: 3px 8px; margin-top: 6px; }
+  [hidden] { display: none !important; }
+  #tl { width: 100%; height: 84px; display: block; margin-top: 8px; border-radius: 4px; cursor: pointer; background: #0e1013; }
+  .tlkey { display: flex; justify-content: space-between; gap: 6px; margin-top: 4px; }
+  #rec.on { background: #7f1d1d; border-color: #ef4444; }
+  /* live play on a touch screen (startTouch): full-screen map, sticks and buttons as in the game */
+  /* no browser gestures at all: no double-tap / pinch zoom, scrolling, text selection or callouts */
+  html.touch, body.touch, body.touch * { touch-action: none; -webkit-user-select: none; user-select: none;
+                                         -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; }
+  body.touch { overflow: hidden; overscroll-behavior: none; position: fixed; inset: 0;
+    --sl: env(safe-area-inset-left, 0px); --sr: env(safe-area-inset-right, 0px); --st: env(safe-area-inset-top, 0px); --sb: env(safe-area-inset-bottom, 0px); }
+  /* portrait (an iPhone with rotation lock): the game is turned 90 degrees (fitTouch), so it is played holding the
+     phone sideways as in Brawl Stars; the screen's safe areas turn with it */
+  body.touch.rot { --sl: env(safe-area-inset-top, 0px); --sr: env(safe-area-inset-bottom, 0px); --st: env(safe-area-inset-right, 0px); --sb: env(safe-area-inset-left, 0px); }
+  body.touch.rot.ccw { --sl: env(safe-area-inset-bottom, 0px); --sr: env(safe-area-inset-top, 0px); --st: env(safe-area-inset-left, 0px); --sb: env(safe-area-inset-right, 0px); }
+  body.touch.rot #app { position: fixed; left: 0; top: 0; transform-origin: 0 0; }
+  body.touch #side { display: none; }
+  body.touch #app { padding: 0; gap: 0; height: 100vh; height: 100dvh; }
+  body.touch canvas { border-radius: 0; }
+  #touch { position: absolute; inset: 0; touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+  #touch .stick, #touch .pad { position: absolute; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  #touch i { width: 44%; height: 44%; border-radius: 50%; background: rgba(255,255,255,.6); pointer-events: none; }
+  #tstick { display: none !important; width: 30vmin; height: 30vmin; margin: -15vmin 0 0 -15vmin; background: rgba(255,255,255,.1); border: 2px solid rgba(255,255,255,.35); }
+  #tstick.on { display: flex !important; }
+  #tatk { right: calc(6vmin + var(--sr)); bottom: calc(8vmin + var(--sb)); width: 26vmin; height: 26vmin; background: rgba(251,146,60,.25); border: 2px solid rgba(251,146,60,.85); }
+  #tatk i { background: rgba(251,146,60,.95); }
+  #tsup { right: calc(34vmin + var(--sr)); bottom: calc(4vmin + var(--sb)); width: 19vmin; height: 19vmin; border: 2px solid rgba(253,224,71,.45); opacity: .6; }
+  #tsup.ready { opacity: 1; border-color: #fde047; box-shadow: 0 0 14px #fde047; }
+  #tsup i { background: #fde047; }
+  #tgad { right: calc(34vmin + var(--sr)); bottom: calc(26vmin + var(--sb)); width: 12vmin; height: 12vmin; background: rgba(74,222,128,.22); border: 2px solid rgba(74,222,128,.75); color: #bbf7d0; font: 700 5vmin system-ui; }
+  #tbar { position: absolute; left: calc(8px + var(--sl)); top: calc(6px + var(--st)); display: flex; gap: 6px; align-items: center; }
+  #tbar button { padding: 6px 12px; font-size: 16px; background: rgba(0,0,0,.45); }
+  #tstat { color: #cbd5e1; font-size: 12px; text-shadow: 0 1px 2px #000; }
+  #tbar #trot { display: none; } body.rot #tbar #trot { display: inline-block; }
+  #thelp { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,.7); }
+  #thelp > div { max-width: 80%; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 18px; font-size: 15px; line-height: 1.5; }
+  #thelp b { color: var(--own); }
+  #tagain { position: absolute; left: 50%; top: 62%; transform: translateX(-50%); font-size: 22px; padding: 10px 26px; background: #2563eb; border-color: #60a5fa; }
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="stage"><canvas id="cv3"></canvas><canvas id="cv"></canvas><div id="tip"></div>
+    <div id="touch" hidden>
+      <div id="tstick" class="stick"><i></i></div>
+      <div id="tatk" class="pad"><i></i></div><div id="tsup" class="pad"><i></i></div><div id="tgad" class="pad">G</div>
+      <div id="tbar"><button id="tpause">❚❚</button><button id="tfull" title="full screen">⛶</button><button id="trot" title="turn the game around">⟲</button><span id="tstat"></span></div>
+      <button id="tagain" hidden>Play again</button>
+      <div id="thelp" hidden><div>
+        <b>Full screen on iPhone</b><br>Safari only lets videos go full screen. To play full screen: tap
+        <b>Share</b> (the square with the arrow) → <b>Add to Home Screen</b>, then start <b>Brawl</b> from the home
+        screen. It opens without any browser bars.<br><br>Tap to close.
+      </div></div>
+    </div>
+  </div>
+  <div id="side">
+    <div class="card">
+      <h1 id="title">Battle replay</h1>
+      <div class="muted" id="sub"></div>
+    </div>
+    <div class="card">
+      <div class="score"><span class="t0" id="s0">0</span><span class="muted" id="clock" style="font-size:14px">0:00</span><span class="t1" id="s1">0</span></div>
+      <div class="row muted" style="justify-content:space-between"><span>Blue (own team)</span><span id="tick">tick 0</span><span>Red</span></div>
+    </div>
+    <div class="card" id="owncard" hidden>
+      <div class="row" style="justify-content:space-between"><b>You</b><span class="muted" id="ownsub"></span></div>
+      <div class="muted" style="margin-top:4px">ammo</div><div class="ammo" id="ammo"></div>
+      <div class="muted">super <span id="supertxt"></span></div><div class="bar" id="superbar"><div></div></div>
+    </div>
+    <div class="card" id="livecard" hidden>
+      <b>Live battle</b> <span class="muted" id="livestat"></span>
+      <div class="keys muted">
+        <span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> / arrows</span><span>move</span>
+        <span><kbd>Space</kbd> <kbd>Enter</kbd> <kbd>J</kbd></span><span>attack, auto-aim (hold to keep firing)</span>
+        <span>left click</span><span>attack towards the cursor</span>
+        <span><kbd>E</kbd> <kbd>K</kbd></span><span>super, auto-aim</span>
+        <span>right click</span><span>super towards the cursor</span>
+        <span><kbd>Q</kbd></span><span>gadget</span>
+        <span><kbd>P</kbd></span><span>pause</span>
+        <span><kbd>R</kbd></span><span>new battle (next seed)</span>
+      </div>
+    </div>
+    <div class="card" id="watchcard" hidden>
+      <div class="row" style="justify-content:space-between"><b>Watching agent</b><span class="muted" id="watchstat"></span></div>
+      <div class="row" style="margin-top:6px">
+        <select id="episode" style="flex:1"></select>
+        <label class="row muted"><input type="checkbox" id="follow" checked> follow live</label>
+      </div>
+    </div>
+    <div class="card" id="notecard" hidden><b>Agent</b><div class="keys muted" id="note"></div></div>
+    <div class="card" id="playcard">
+      <input type="range" id="scrub" min="0" value="0">
+      <canvas id="tl" title="gem scores (blue / red), countdowns (shaded), deaths (marks at the bottom), agent numbers (yellow); click or drag to seek"></canvas>
+      <div class="tlkey muted"><span id="tlinfo"></span><select id="tlcol" hidden title="agent number plotted in yellow"></select></div>
+      <div class="row" style="margin-top:6px">
+        <button id="play">▶ Play</button>
+        <button id="back" title="Back 1 tick (←)">◀</button>
+        <button id="fwd" title="Forward 1 tick (→)">▶</button>
+        <select id="speed">
+          <option value="0.25">0.25×</option><option value="0.5">0.5×</option><option value="1" selected>1×</option>
+          <option value="2">2×</option><option value="4">4×</option><option value="8">8×</option><option value="16">16×</option>
+        </select>
+        <label class="row muted"><input type="checkbox" id="labels" checked> names</label>
+        <label class="row muted" title="move target, aim line, auto-aim target, attack range"><input type="checkbox" id="inputs" checked> inputs</label>
+        <label class="row muted" title="paths of the last 2 s"><input type="checkbox" id="trails" checked> trails</label>
+        <label class="row muted" title="scoreboard and gem countdown drawn on the map (also in exported videos)"><input type="checkbox" id="hudon" checked> hud</label>
+        <label class="row muted" title="the game's own 3D models, textures and shading (packs from tools/gfx/build.py)"><input type="checkbox" id="view3d" checked> 3D</label>
+        <select id="cam" title="camera (3D)"><option value="overview">whole map</option><option value="follow">follow own</option></select>
+        <button id="rec" title="record the map from here to the end at the chosen speed and download it as a .webm video">⏺ video</button>
+      </div>
+      <div class="muted" style="margin-top:6px"><kbd>Space</kbd> play/pause · <kbd>←</kbd><kbd>→</kbd> step one frame (<kbd>Shift</kbd> 1 s) · <kbd>Home</kbd><kbd>End</kbd> · <kbd>[</kbd><kbd>]</kbd> speed · <kbd>N</kbd><kbd>B</kbd> next/previous death or gem score · drop a .json to load</div>
+    </div>
+    <div class="card"><div id="units"></div></div>
+    <div class="card legend muted">
+      <span><i class="sw" style="background:var(--wall)"></i>wall</span>
+      <span><i class="sw" style="background:var(--bush)"></i>bush</span>
+      <span><i class="sw" style="background:var(--water)"></i>water</span>
+      <span><i class="sw" style="background:var(--gem)"></i>gem (number above a brawler = gems carried)</span>
+      <span><i class="sw" style="background:var(--own);border-radius:50%"></i>own player</span>
+      <br><span>● brawler · • projectile · ◯ area effect · ◆ item</span>
+      <br><span>→ move</span><span><b style="color:#fb923c">—</b> attack</span><span><b style="color:#fde047">—</b> super</span><span>◯ auto-aim target</span>
+    </div>
+  </div>
+</div>
+<div id="drop">Drop replay .json</div>
+<script id="replay" type="application/json">/*REPLAY_JSON*/</script>
+<script>
+// Display names for internal character ids (only ones we are sure of; others show the internal id).
+const DISPLAY = {ShotgunGirl:'Shelly', Gunslinger:'Colt', BullDude:'Bull', RocketGirl:'Brock', TrickshotDude:'Rico',
+  Cactus:'Spike', Barkeep:'Barley', Mechanic:'Jessie', Shaman:'Nita', TntDude:'Dynamike', Luchador:'El Primo',
+  Undertaker:'Mortis', Crow:'Crow', DeadMariachi:'Poco', BowDude:'Bo', Sniper:'Piper', MinigunDude:'Pam',
+  BlackHole:'Tara', BarrelBot:'Darryl', Artillery:'Penny', HammerDude:'Frank', HookDude:'Gene', NinjaDude:'Leon',
+  Rosa:'Rosa', Whirlwind:'Carl', Baseball:'Bibi', Arcade:'8-Bit', Sandstorm:'Sandy', BeeSniper:'Bea', Speedy:'Max',
+  Wally:'Sprout'};
+const TYPE = ['brawler', 'projectile', 'area effect', 'item'];
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const C = {}; for (const k of ['team0','team1','own','gem','open','wall','wall2','bush','water','hazard']) C[k] = css('--' + k);
+
+function tileColor(name) {
+  if (/Forest|Bush/.test(name)) return C.bush;
+  if (/Water/.test(name)) return C.water;
+  if (/^Blocking[34]$|Indestructible|Fence/.test(name)) return C.wall2;
+  if (/Blocking|Wall|Crate/.test(name)) return C.wall;
+  if (/^(Damage|Slow|IntervalDamage)$/.test(name)) return C.hazard;
+  return C.open;
+}
+
+let R, frames, names, gridAt, roster, idx = 0, playing = false, acc = 0, last = 0, tilePx = 16, tileCache = {};
+const cv = document.getElementById('cv'), ctx = cv.getContext('2d');
+const $ = id => document.getElementById(id);
+
+let seen = new Map();
+function noteRoster(f) {
+  let grew = false;
+  for (const o of f[3]) if (o[1] === 0 && o[7] >= 0 && !seen.has(o[7])) { seen.set(o[7], {ni: o[2], team: o[6], maxhp: o[9]}); grew = true; }
+  if (grew) roster = [...seen.entries()].map(([pidx, v]) => ({pidx, ...v})).sort((a, b) => a.team - b.team || a.pidx - b.pidx);
+}
+
+// A player's turrets and summons are type-0 objects with the owner's player index: the hero is the one whose name the roster has.
+const isHero = o => o[1] === 0 && o[7] >= 0 && (seen.get(o[7]) || {ni: o[2]}).ni === o[2];
+
+// Events for the timeline and the N/B keys: hero deaths (by roster player, summons excluded) and gem score changes.
+let EV = {deaths: [], scores: [], alive: new Map(), cols: new Set()};
+function resetEvents() { EV = {deaths: [], scores: [], alive: new Map(), cols: new Set()}; TL.n = -1; }
+function noteEvents(i) {
+  const f = frames[i], alive = new Map();
+  for (const o of f[3]) if (o[1] === 0 && o[7] >= 0 && o[8] > 0) { const r = seen.get(o[7]); if (r && r.ni === o[2]) alive.set(o[7], o); }
+  if (i > 0) {
+    for (const [p, o] of EV.alive) if (!alive.has(p)) EV.deaths.push({tick: f[0], pidx: p, team: seen.get(p).team, x: o[3], y: o[4]});
+    const pf = frames[i - 1];
+    if (f[1] !== pf[1] || f[2] !== pf[2]) EV.scores.push({tick: f[0], d0: f[1] - pf[1], d1: f[2] - pf[2]});
+  }
+  EV.alive = alive;
+  if (f[7]) for (const [k, v] of Object.entries(f[7])) if (typeof v === 'number') EV.cols.add(k);
+}
+function frameAtTick(t) {   // first frame index with tick >= t
+  let lo = 0, hi = frames.length - 1;
+  while (lo < hi) { const m = (lo + hi) >> 1; if (frames[m][0] < t) lo = m + 1; else hi = m; }
+  return lo;
+}
+
+// ---- 3D view (tools/viewer/gfx3d.js + packs from tools/gfx/build.py; falls back to the 2D map without them) ----
+const GFX_BASE = location.protocol === 'file:' ? '/*GFX_FILE_BASE*/' : '/gfx/';
+const G3 = {ok: false, ready: false};
+G3.loaded = new Promise(done => {     // gfx3d.js is in and WebGL2 tried (G3.ok)
+  const s = document.createElement('script');
+  s.src = GFX_BASE + 'gfx3d.js';
+  s.onload = () => {
+    try { G3.ok = GFX.init($('cv3')); } catch (e) { console.warn('WebGL2:', e); }
+    GFX.onDirty = () => { if (use3d() && !playing) draw(); };
+    if (G3.ok && R && !LIVE) GFX.prepare(R).then(() => { G3.ready = true; resize(); draw(); }).catch(e => console.warn('3D assets:', e));
+    done();
+  };
+  s.onerror = done;
+  document.head.appendChild(s); });
+addEventListener('error', e => { if (location.hash.includes('debug')) $('title').textContent = 'ERR ' + e.message + ' ' + e.lineno; });
+if (location.hash.includes('follow')) $('cam').value = 'follow';
+if (location.hash.includes('flat')) $('view3d').checked = false;
+const use3d = () => G3.ok && G3.ready && $('view3d').checked;
+const DPR = () => Math.min(devicePixelRatio || 1, matchMedia('(pointer: coarse)').matches ? 2 : 4);   // as gfx3d.js
+
+// Attacks for the 3D animation: a projectile that appears near a living character of its team was fired by it.
+// All of it (and the facing in FACE) is keyed by gid, and gids restart in every battle: load() and selectEpisode() reset it.
+let ATK = new Map(), atkN = 0, atkPrev = new Set(), DMG = [], hpPrev = new Map();
+const FACE = new Map();
+function resetAttacks() { ATK = new Map(); atkN = 0; atkPrev = new Set(); DMG = []; hpPrev = new Map(); FACE.clear(); }
+function noteAttacks() {
+  if (atkN > frames.length) resetAttacks();
+  for (; atkN < frames.length; atkN++) {
+    const i = atkN, f = frames[i], cur = new Set(), heroes = f[3].filter(o => o[1] === 0 && o[8] > 0);
+    for (const o of f[3]) if (o[1] === 0) {                 // damage numbers: hp drops
+      const p = hpPrev.get(o[0]);
+      if (p !== undefined && o[8] < p && p > 0) DMG.push({tick: f[0], gid: o[0], n: p - Math.max(0, o[8]), x: o[3], y: o[4], team: o[6]});
+      hpPrev.set(o[0], o[8]);
+    }
+    for (const o of f[3]) {
+      if (o[1] !== 1) continue;
+      cur.add(o[0]);
+      if (i === 0 || atkPrev.has(o[0])) continue;
+      let best = null, bd = (2.5 * R.meta.tileSize) ** 2;
+      for (const h of heroes) if (h[6] === o[6]) { const d = (h[3] - o[3]) ** 2 + (h[4] - o[4]) ** 2; if (d < bd) { bd = d; best = h; } }
+      if (!best) continue;
+      const nx = i + 1 < frames.length ? frames[i + 1][3].find(p => p[0] === o[0]) : null;
+      const dx = nx ? nx[3] - o[3] : o[3] - best[3], dy = nx ? nx[4] - o[4] : o[4] - best[4];
+      const list = ATK.get(best[0]) || []; ATK.set(best[0], list);
+      if (!list.length || list[list.length - 1].tick !== f[0])
+        list.push({tick: f[0], ang: Math.atan2(-dy, dx), sup: /Ulti/.test(names[o[2]] || '')});
+    }
+    atkPrev = cur;
+  }
+}
+function lastAttack(gid, now) {
+  const l = ATK.get(gid); if (!l) return null;
+  for (let k = l.length - 1; k >= 0; k--) if (l[k].tick <= now) return now - l[k].tick < R.meta.tickRate * 0.6 ? l[k] : null;
+  return null;
+}
+
+function draw3d(a) {
+  noteAttacks();
+  const f = frames[idx], T = R.meta.tileSize, nf = frames[idx + 1], now = f[0] + (nf ? a * (nf[0] - f[0]) : 0);
+  const objs = objectsAt(idx, a), nxt = nf || f, prv = frames[Math.max(0, idx - 1)];
+  const ownTeam = (roster.find(u => u.pidx === R.meta.ownPlayer) || {team: 0}).team;
+  const chars = [], props = [];
+  let own = null, ownGid = null;
+  for (const o of objs) {
+    const [gid, type, ni, x, y, z, team, pidx, hp] = o;
+    if (type === 3 && names[ni] === 'OrbSpawner') props.push({key: 'OrbSpawner', x: x / T, y: -y / T});
+    if (type !== 0 || hp <= 0) continue;
+    const n2 = nxt[3].find(p => p[0] === gid), p2 = prv[3].find(p => p[0] === gid);
+    let vx = 0, vy = 0;
+    if (n2 && nxt !== f) { vx = n2[3] - frames[idx][3].find(p => p[0] === gid)[3]; vy = n2[4] - frames[idx][3].find(p => p[0] === gid)[4]; }
+    else if (p2 && prv !== f) { vx = x - p2[3]; vy = y - p2[4]; }
+    const moving = Math.hypot(vx, vy) > 15;
+    const prevF = FACE.get(gid) || {a: team === ownTeam ? Math.PI / 2 : -Math.PI / 2, t: now};
+    let want = prevF.want ?? prevF.a;
+    if (moving) want = Math.atan2(-vy, vx);
+    const atk = lastAttack(gid, now);
+    if (atk) want = atk.ang;
+    let face = want;
+    const dtT = now - prevF.t;
+    if (dtT > 0 && dtT < R.meta.tickRate) {                  // continuous playback: max ~720 deg/s
+      let d = ((want - prevF.a + Math.PI) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI) - Math.PI;
+      const maxTurn = 12.5 * dtT / R.meta.tickRate;
+      face = prevF.a + Math.max(-maxTurn, Math.min(maxTurn, d));
+    }
+    FACE.set(gid, {a: face, t: now, want});
+    let anim = moving ? 'walk' : 'idle', t = now / R.meta.tickRate;
+    if (atk) { const dt = (now - atk.tick) / R.meta.tickRate; anim = dt < 0.17 ? (atk.sup ? 'super' : 'attack') : (atk.sup ? 'superRecoil' : 'recoil'); t = dt < 0.17 ? dt : dt - 0.17; }
+    chars.push({gid, name: names[ni], x: x / T, y: -y / T, z: z / T, blue: team === ownTeam, facing: face, anim, t});
+    if (pidx === R.meta.ownPlayer && isHero(o)) { own = [x / T, -y / T]; ownGid = gid; }
+  }
+  const st = stageSize();
+  const rings = chars.map(c => ({x: c.x, y: c.y, r: 0.42, col: c.gid === ownGid ? [0.29, 0.87, 0.5] : c.blue ? [0.2, 0.55, 1] : [1, 0.25, 0.3]}));
+  if (gridAt[idx] < 0) return;
+  GFX.frame({w: st.width - 8, h: st.height - 8, mapW: R.meta.w, mapH: R.meta.h, grid: frames[gridAt[idx]][4], gridKey: gridAt[idx],
+             names, chars, props, rings, mode: $('cam').value, own});
+  // 2D overlay in CSS pixels
+  const dpr = DPR();
+  ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.drawImage($('cv3'), 0, 0, cv.width, cv.height);   // one canvas: video export sees 3D
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const P = (x, y, z = 0) => GFX.project(x / T, -y / T, z);
+  const unit = Math.abs(P(0, 0)[0] - P(T, 0)[0]);          // pixels per tile near the map top
+  const unitAt = (x, y) => Math.abs(P(x, y)[0] - P(x + T, y)[0]);
+  for (const o of objs) {
+    const [gid, type, ni, x, y, z, team] = o, name = names[ni];
+    if (type === 2) {                                       // area effect: ground ellipse
+      if (name === 'HeroSpawn') continue;
+      ctx.save(); ctx.globalAlpha = .3; ctx.fillStyle = team === ownTeam ? '#3b82f6' : '#ef4444'; ctx.beginPath();
+      for (let k = 0; k <= 24; k++) { const q = P(x + Math.cos(k / 24 * 6.283) * T * .9, y + Math.sin(k / 24 * 6.283) * T * .9, 0.02); k ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1]); }
+      ctx.fill(); ctx.restore();
+    } else if (type === 1) {                                // projectile
+      const [X, Y] = P(x, y, z / T + 0.55), r = Math.max(3, unit * .12);
+      const g = ctx.createRadialGradient(X, Y, 0, X, Y, r * 2.2);
+      g.addColorStop(0, '#fff'); g.addColorStop(.35, team === ownTeam ? '#7dd3fc' : '#fca5a5'); g.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(X, Y, r * 2.2, 0, 7); ctx.fill();
+    } else if (type === 3 && name !== 'OrbSpawner') {       // gem
+      const bob = Math.sin(now / R.meta.tickRate * 4 + gid) * .08;
+      const [X, Y] = P(x, y, 0.35 + bob), s = Math.max(4, unit * .2);
+      const [sx, sy] = P(x, y, 0.01);
+      ctx.fillStyle = 'rgba(0,0,0,.25)'; ctx.beginPath(); ctx.ellipse(sx, sy, s * .9, s * .45, 0, 0, 7); ctx.fill();
+      gemIcon(X, Y, s * 1.1);
+    }
+  }
+  const font = s => `${s}px 'Lilita One', system-ui, sans-serif`;
+  MAP3 = {pt: (x, y, z) => P(x, y, z), unit};
+  if ($('trails').checked) drawTrails();
+  drawDeaths();
+  if ($('inputs').checked) drawInputs(objs);
+  drawAim(objs);
+  MAP3 = null;
+  for (const o of objs) {                                   // health bars, names, gems: game style
+    const [gid, type, ni, x, y, z, team, pidx, hp, maxhp] = o;
+    if (type !== 0 || hp <= 0 || maxhp <= 0) continue;
+    const [X, Y] = P(x, y, 1.9 * GFX.heroScale(names[ni]) * GFX.CHAR_SCALE() / 0.1), u = Math.abs(P(x, y)[0] - P(x + T, y)[0]);
+    const w = Math.max(40, u * 1.3), h = Math.max(7, u * .2), fr = Math.max(0, hp / maxhp);
+    const mine = pidx === R.meta.ownPlayer && isHero(o), col = mine ? '#4ade80' : team === ownTeam ? '#38bdf8' : '#f43f5e';
+    ctx.fillStyle = 'rgba(0,0,0,.75)'; ctx.beginPath(); ctx.roundRect(X - w / 2 - 2, Y - h / 2 - 2, w + 4, h + 4, 4); ctx.fill();
+    ctx.fillStyle = col; ctx.beginPath(); ctx.roundRect(X - w / 2, Y - h / 2, w * fr, h, 3); ctx.fill();
+    ctx.font = font(Math.max(11, h * 1.25)); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.lineWidth = 3; ctx.strokeStyle = '#000'; ctx.fillStyle = '#fff';
+    ctx.strokeText(hp, X, Y - h * 1.35); ctx.fillText(hp, X, Y - h * 1.35);
+    if ($('labels').checked) {
+      const label = mine ? 'YOU' : (DISPLAY[names[ni]] || names[ni]).toUpperCase();
+      ctx.font = font(Math.max(10, h * 1.05)); ctx.fillStyle = col;
+      ctx.strokeText(label, X, Y - h * 2.7); ctx.fillText(label, X, Y - h * 2.7);
+    }
+    if (mine && f[5] && f[5][1] > 0) {                     // ammo bar under the own health bar
+      const own = f[5], seg = w / own[1];
+      for (let k = 0; k < own[1]; k++) {
+        ctx.fillStyle = 'rgba(0,0,0,.75)'; ctx.fillRect(X - w / 2 + k * seg + 1, Y + h / 2 + 3, seg - 2, h * .7);
+        ctx.fillStyle = '#fb923c'; ctx.fillRect(X - w / 2 + k * seg + 1, Y + h / 2 + 3, (seg - 2) * Math.max(0, Math.min(1, own[0] / 1000 - k)), h * .7);
+      }
+    }
+    if (o[10] > 0) {                                        // gems carried
+      const gy = Y - h * ($('labels').checked ? 4.2 : 2.9), gs = Math.max(6, h * .8);
+      gemIcon(X - gs * 1.5, gy, gs * 1.05);
+      ctx.font = font(Math.max(12, gs * 2)); ctx.textAlign = 'left'; ctx.lineWidth = 3; ctx.strokeStyle = '#000'; ctx.fillStyle = '#fff';
+      ctx.strokeText(o[10], X - gs * .2, gy + 1); ctx.fillText(o[10], X - gs * .2, gy + 1);
+    }
+  }
+  const span = R.meta.tickRate * 0.8;
+  for (let k = DMG.length - 1; k >= 0 && now - DMG[k].tick < span * 4; k--) {
+    const d = DMG[k], age = (now - d.tick) / span;
+    if (age < 0 || age > 1) continue;
+    const [X, Y] = P(d.x, d.y, 1.6 + age * 0.9);
+    ctx.globalAlpha = 1 - Math.max(0, age - .6) / .4; ctx.font = font(Math.max(14, unitAt(d.x, d.y) * .42));
+    ctx.textAlign = 'center'; ctx.lineWidth = 4; ctx.strokeStyle = '#000'; ctx.fillStyle = d.team === ownTeam ? '#ff5a5a' : '#fff';
+    ctx.strokeText(d.n, X + 18, Y); ctx.fillText(d.n, X + 18, Y); ctx.globalAlpha = 1;
+  }
+  if ($('hudon').checked) drawHud3d(f, ownTeam);
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  if (LIVE ? LIVE.done : WATCH ? WATCH.done && idx === frames.length - 1 : idx === frames.length - 1) {
+    ctx.fillStyle = 'rgba(0,0,0,.55)'; ctx.fillRect(0, cv.height / 2 - 30 * dpr, cv.width, 60 * dpr);
+    ctx.fillStyle = '#fff'; ctx.font = font(26 * dpr); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    const w = f[1] > f[2] ? 'BLUE WINS' : f[2] > f[1] ? 'RED WINS' : 'GAME OVER';
+    ctx.fillText(`${w}  ${f[1]}–${f[2]}${LIVE && !TOUCHUI ? '   ·   R = play again' : ''}`, cv.width / 2, cv.height / 2);
+  } else if (LIVE && (LIVE.paused || LIVE.loading)) {
+    ctx.fillStyle = 'rgba(0,0,0,.45)'; ctx.fillRect(0, cv.height / 2 - 24 * dpr, cv.width, 48 * dpr);
+    ctx.fillStyle = '#fff'; ctx.font = font(22 * dpr); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(LIVE.loading ? 'LOADING…' : TOUCHUI ? 'PAUSED' : 'PAUSED · P to resume', cv.width / 2, cv.height / 2);
+  }
+  ctx.textBaseline = 'alphabetic';
+  if (TOUCHUI) touchHud(f); else { hud(f); drawTimeline(); }
+  if (location.hash.includes('debug')) $('sub').textContent = JSON.stringify({...GFX.DBG, heroes: Object.keys(GFX.S.heroes), chars: chars.length});
+}
+
+// Game-style top HUD (CSS pixels): team gem counters, clock, the "wins in" countdown.
+function gemIcon(x, y, s, fill = '#c56cff') {
+  ctx.fillStyle = fill; ctx.strokeStyle = '#1e0b3a'; ctx.lineWidth = Math.max(1.5, s * .18);
+  ctx.beginPath(); ctx.moveTo(x, y - s); ctx.lineTo(x + s * .8, y - s * .25); ctx.lineTo(x + s * .55, y + s * .75);
+  ctx.lineTo(x - s * .55, y + s * .75); ctx.lineTo(x - s * .8, y - s * .25); ctx.closePath(); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = 'rgba(255,255,255,.55)'; ctx.beginPath(); ctx.moveTo(x, y - s * .85); ctx.lineTo(x + s * .5, y - s * .25); ctx.lineTo(x, y - s * .05); ctx.lineTo(x - s * .5, y - s * .25); ctx.closePath(); ctx.fill();
+}
+function drawHud3d(f, ownTeam) {
+  const Wc = cv.width / DPR(), fs = Math.max(16, Math.min(30, Wc / 40));
+  const font = s => `${s}px 'Lilita One', system-ui, sans-serif`;
+  const blue = ownTeam === 0 ? f[1] : f[2], red = ownTeam === 0 ? f[2] : f[1];
+  const s = f[0] / R.meta.tickRate, clock = `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+  const cx = Wc / 2, top = 8, pillW = fs * 4.6, pillH = fs * 1.7;
+  ctx.save(); ctx.textBaseline = 'middle'; ctx.lineJoin = 'round';
+  for (const [side, n, col, dark] of [[-1, blue, '#2f80ff', '#123a8a'], [1, red, '#ff3b4e', '#7a1020']]) {
+    const x = cx + side * (fs * 1.9 + pillW / 2);
+    ctx.fillStyle = dark; ctx.beginPath(); ctx.roundRect(x - pillW / 2, top + 3, pillW, pillH, pillH / 2); ctx.fill();
+    ctx.fillStyle = col; ctx.beginPath(); ctx.roundRect(x - pillW / 2, top, pillW, pillH, pillH / 2); ctx.fill();
+    gemIcon(x - side * pillW * .22, top + pillH / 2, fs * .62);
+    ctx.font = font(fs * 1.15); ctx.textAlign = 'center'; ctx.lineWidth = fs * .22; ctx.strokeStyle = '#111'; ctx.fillStyle = '#fff';
+    ctx.strokeText(n, x + side * pillW * .18, top + pillH / 2 + 1); ctx.fillText(n, x + side * pillW * .18, top + pillH / 2 + 1);
+  }
+  ctx.font = font(fs * .95); ctx.textAlign = 'center'; ctx.lineWidth = fs * .2; ctx.strokeStyle = '#111'; ctx.fillStyle = '#fff';
+  ctx.strokeText(clock, cx, top + pillH / 2 + 1); ctx.fillText(clock, cx, top + pillH / 2 + 1);
+  const cd = f[5] && f[5].length > 6 ? f[5][5] : 0, cdTeam = f[5] && f[5].length > 6 ? f[5][6] : -1;
+  if (cd > 0) {
+    const ours = cdTeam === ownTeam, big = fs * 3.2, y1 = top + pillH + fs * 1.1;
+    ctx.font = font(fs * 1.05); ctx.lineWidth = fs * .25; ctx.fillStyle = ours ? '#7fb2ff' : '#ff8a96';
+    const who = ours ? 'BLUE TEAM WINS IN' : 'RED TEAM WINS IN';
+    ctx.strokeText(who, cx, y1); ctx.fillText(who, cx, y1);
+    ctx.font = font(big); ctx.lineWidth = fs * .35; ctx.fillStyle = '#fff';
+    ctx.strokeText(Math.ceil(cd / R.meta.tickRate), cx, y1 + big * .75); ctx.fillText(Math.ceil(cd / R.meta.tickRate), cx, y1 + big * .75);
+  }
+  ctx.restore();
+}
+
+function load(rep) {
+  R = rep; frames = rep.frames; names = rep.names; idx = 0; tileCache = {};
+  gridAt = []; let g = -1;
+  frames.forEach((f, i) => { if (f[4]) g = i; gridAt.push(g); });
+  seen = new Map(); roster = [];
+  frames.forEach(noteRoster);
+  resetEvents(); frames.forEach((f, i) => noteEvents(i)); tlColumns(); resetAttacks();
+  $('owncard').hidden = !frames.some(f => f[5]);
+  const m = rep.meta;
+  $('title').textContent = `${WATCH ? 'Agent · ' : ''}${m.loc} · seed ${m.seed}`;
+  $('sub').textContent = LIVE ? `${m.w}×${m.h} tiles · live on the tablet · you play ${DISPLAY[m.hero] || m.hero}`
+    : WATCH ? `${m.w}×${m.h} tiles · agent plays ${DISPLAY[m.hero] || m.hero}`
+    : `${m.w}×${m.h} tiles · ${frames.length} frames · ${(frames.length ? (frames[frames.length - 1][0] - frames[0][0]) / m.tickRate : 0).toFixed(1)} s · own hero ${DISPLAY[m.hero] || m.hero}`
+      + (m.episode ? ` · logged episode: ${m.episode.result > 0 ? 'win' : m.episode.result < 0 ? 'loss' : 'draw'} ${m.episode.score.join('–')}, ${m.episode.steps} decisions` : '');
+  $('scrub').max = frames.length - 1;
+  noteAttacks();
+  resize(); if (frames.length) draw();
+  if (G3.ok && !LIVE) GFX.prepare(rep).then(() => { G3.ready = true; resize(); draw(); }).catch(e => console.warn('3D assets:', e));
+}
+
+const stageSize = () => ({width: $('stage').clientWidth, height: $('stage').clientHeight});   // unturned (fitTouch)
+
+function resize() {
+  if (TOUCHUI) fitTouch();
+  if (!R) return;
+  const st = stageSize();
+  document.body.classList.toggle('v3d', use3d());
+  if (use3d()) {     // 3D: both canvases fill the stage; tilePx stays the 2D map scale for overlay sizes
+    const dpr = DPR();
+    tilePx = Math.max(6, Math.floor(Math.min((st.height - 8) / R.meta.h, (st.width - 8) / R.meta.w)));
+    for (const c of [cv, $('cv3')]) { c.style.width = (st.width - 8) + 'px'; c.style.height = (st.height - 8) + 'px'; }
+    cv.width = Math.round((st.width - 8) * dpr); cv.height = Math.round((st.height - 8) * dpr); tileCache = {};
+    return;
+  }
+  cv.style.width = cv.style.height = '';
+  tilePx = Math.max(6, Math.floor(Math.min((st.height - 8) / R.meta.h, (st.width - 8) / R.meta.w)));
+  cv.width = R.meta.w * tilePx; cv.height = R.meta.h * tilePx; tileCache = {};
+}
+
+function tileLayer(gi) {
+  if (tileCache[gi]) return tileCache[gi];
+  const off = document.createElement('canvas'); off.width = cv.width; off.height = cv.height;
+  const o = off.getContext('2d'), g = frames[gi][4], w = R.meta.w;
+  for (let i = 0; i < g.length; i++) {
+    const x = (i % w) * tilePx, y = Math.floor(i / w) * tilePx, col = tileColor(names[g[i]]);
+    o.fillStyle = col; o.fillRect(x, y, tilePx, tilePx);
+    if (col !== C.open) { o.fillStyle = 'rgba(0,0,0,.18)'; o.fillRect(x, y + tilePx - 2, tilePx, 2); }
+  }
+  o.strokeStyle = 'rgba(0,0,0,.06)';
+  for (let x = 0; x <= w; x++) { o.beginPath(); o.moveTo(x * tilePx, 0); o.lineTo(x * tilePx, off.height); o.stroke(); }
+  for (let y = 0; y <= R.meta.h; y++) { o.beginPath(); o.moveTo(0, y * tilePx); o.lineTo(off.width, y * tilePx); o.stroke(); }
+  return tileCache[gi] = off;
+}
+
+const teamCol = t => t === 0 ? C.team0 : t === 1 ? C.team1 : '#9ca3af';
+const px = v => v / R.meta.tileSize * tilePx;
+let MAP3 = null;                     // set by draw3d: {pt(x, y, z) -> screen, unit: pixels per tile}
+const pt = (x, y, z = 0) => MAP3 ? MAP3.pt(x, y, z) : [px(x), px(y)];
+const tileP = () => MAP3 ? MAP3.unit : tilePx;
+function groundCircle(x, y, r) {     // path of a circle on the ground (an ellipse in 3D)
+  ctx.beginPath();
+  if (!MAP3) { ctx.arc(px(x), px(y), px(r), 0, 7); return; }
+  for (let k = 0; k <= 40; k++) { const q = pt(x + Math.cos(k / 40 * 6.2832) * r, y + Math.sin(k / 40 * 6.2832) * r, 0.03); k ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1]); }
+}
+
+function objectsAt(i, a) {   // interpolate positions between frame i and i+1 by global id
+  const cur = frames[i][3];
+  if (!a || i + 1 >= frames.length) return cur;
+  const nxt = new Map(frames[i + 1][3].map(o => [o[0], o]));
+  return cur.map(o => { const n = nxt.get(o[0]); if (!n) return o;
+    const c = o.slice(); c[3] = o[3] + (n[3] - o[3]) * a; c[4] = o[4] + (n[4] - o[4]) * a; return c; });
+}
+
+function draw(a = 0) {
+  if (!R) return;
+  if (use3d()) return draw3d(a);
+  const f = frames[idx];
+  ctx.drawImage(tileLayer(gridAt[idx]), 0, 0);
+  const objs = objectsAt(idx, a), showLabels = $('labels').checked, r = tilePx * 0.45;
+  if ($('trails').checked) drawTrails();
+  for (const pass of [2, 3, 1, 0]) for (const o of objs) {
+    const [gid, type, ni, x, y, z, team, pidx, hp, maxhp] = o; if (type !== pass) continue;
+    const X = px(x), Y = px(y), name = names[ni];
+    ctx.save();
+    if (type === 2) {                         // area effect
+      if (name === 'HeroSpawn') { ctx.restore(); continue; }
+      ctx.globalAlpha = .28; ctx.fillStyle = teamCol(team);
+      ctx.beginPath(); ctx.arc(X, Y, tilePx * 0.9, 0, 7); ctx.fill();
+    } else if (type === 3) {                  // item
+      const big = /Spawner/.test(name), s = big ? tilePx * .5 : tilePx * .28;
+      ctx.fillStyle = /Point|Gem|Orb/.test(name) ? C.gem : /Ball/.test(name) ? '#f5f5f5' : '#22c55e';
+      ctx.translate(X, Y); ctx.rotate(Math.PI / 4); ctx.fillRect(-s / 2, -s / 2, s, s);
+      if (big) { ctx.strokeStyle = '#000'; ctx.globalAlpha = .4; ctx.strokeRect(-s / 2, -s / 2, s, s); }
+    } else if (type === 1) {                  // projectile
+      ctx.fillStyle = teamCol(team); ctx.strokeStyle = '#000'; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.arc(X, Y - px(z), Math.max(2, tilePx * .13), 0, 7); ctx.fill(); ctx.stroke();
+    } else {                                  // character
+      const dead = hp <= 0, hero = pidx >= 0;
+      ctx.globalAlpha = dead ? .3 : 1;
+      ctx.fillStyle = teamCol(team); ctx.strokeStyle = '#0b0d10'; ctx.lineWidth = 2;
+      ctx.beginPath();
+      if (hero) ctx.arc(X, Y, r, 0, 7); else ctx.rect(X - r * .7, Y - r * .7, r * 1.4, r * 1.4);
+      ctx.fill(); ctx.stroke();
+      if (pidx === R.meta.ownPlayer && isHero(o)) {
+        ctx.strokeStyle = C.own; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(X, Y, r + 3, 0, 7); ctx.stroke();
+        const own = f[5];
+        if (own && own[1] > 0 && !dead) {           // ammo segments under the hero, as in the game
+          const w = tilePx * 1.1, h = Math.max(3, tilePx * .12), seg = w / own[1];
+          for (let k = 0; k < own[1]; k++) {
+            ctx.fillStyle = '#111'; ctx.fillRect(X - w / 2 + k * seg + 1, Y + r + 3, seg - 2, h);
+            ctx.fillStyle = '#fb923c'; ctx.fillRect(X - w / 2 + k * seg + 1, Y + r + 3, (seg - 2) * Math.max(0, Math.min(1, own[0] / 1000 - k)), h);
+          }
+        }
+      }
+      if (maxhp > 0 && !dead) {
+        const w = tilePx * 1.1, h = Math.max(3, tilePx * .14), fr = Math.max(0, hp / maxhp);
+        ctx.fillStyle = '#111'; ctx.fillRect(X - w / 2, Y - r - h - 4, w, h);
+        ctx.fillStyle = fr > .5 ? '#4ade80' : fr > .25 ? '#facc15' : '#f87171'; ctx.fillRect(X - w / 2, Y - r - h - 4, w * fr, h);
+      }
+      if (o[10] > 0 && !dead) {                // gems carried, above the health bar
+        const gs = Math.max(5, tilePx * .22), GX = X, GY = Y - r - tilePx * .14 - 4 - gs * 1.6;
+        ctx.globalAlpha = 1; ctx.fillStyle = C.gem; ctx.strokeStyle = '#1b1030'; ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.moveTo(GX - gs * 1.4, GY - gs); ctx.lineTo(GX - gs * .4, GY); ctx.lineTo(GX - gs * 1.4, GY + gs);
+        ctx.lineTo(GX - gs * 2.4, GY); ctx.closePath(); ctx.fill(); ctx.stroke();
+        ctx.font = `800 ${Math.max(11, tilePx * .55)}px system-ui`; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+        ctx.strokeStyle = 'rgba(0,0,0,.85)'; ctx.lineWidth = 3; ctx.fillStyle = '#fff';
+        ctx.strokeText(o[10], GX - gs * .1, GY + 1); ctx.fillText(o[10], GX - gs * .1, GY + 1); ctx.textBaseline = 'alphabetic';
+      }
+      if (showLabels && hero) {
+        ctx.globalAlpha = dead ? .5 : 1; ctx.font = `600 ${Math.max(10, tilePx * .5)}px system-ui`; ctx.textAlign = 'center';
+        ctx.fillStyle = '#fff'; ctx.strokeStyle = 'rgba(0,0,0,.8)'; ctx.lineWidth = 3;
+        const label = DISPLAY[name] || name, half = ctx.measureText(label).width / 2 + 2;
+        const LX = Math.min(cv.width - half, Math.max(half, X)), LY = Math.min(cv.height - 3, Y + r + tilePx * .55);
+        ctx.strokeText(label, LX, LY); ctx.fillText(label, LX, LY);
+      }
+    }
+    ctx.restore();
+  }
+  drawDeaths();
+  if ($('inputs').checked) drawInputs(objs);
+  drawAim(objs);
+  if ($('hudon').checked) drawHud(f);
+  if (LIVE ? LIVE.done : WATCH ? WATCH.done && idx === frames.length - 1 : idx === frames.length - 1) {
+    ctx.fillStyle = 'rgba(0,0,0,.55)'; ctx.fillRect(0, cv.height / 2 - 30, cv.width, 60);
+    ctx.fillStyle = '#fff'; ctx.font = '700 26px system-ui'; ctx.textAlign = 'center';
+    const w = f[1] > f[2] ? 'BLUE WINS' : f[2] > f[1] ? 'RED WINS' : 'GAME OVER';
+    ctx.fillText(`${w}  ${f[1]}–${f[2]}${LIVE && !TOUCHUI ? '   ·   R = play again' : ''}`, cv.width / 2, cv.height / 2 + 9);
+  } else if (LIVE && (LIVE.paused || LIVE.loading)) {
+    ctx.fillStyle = 'rgba(0,0,0,.45)'; ctx.fillRect(0, cv.height / 2 - 24, cv.width, 48);
+    ctx.fillStyle = '#fff'; ctx.font = '700 22px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText(LIVE.loading ? 'LOADING…' : TOUCHUI ? 'PAUSED' : 'PAUSED · P to resume', cv.width / 2, cv.height / 2 + 8);
+  }
+  if (TOUCHUI) touchHud(f); else { hud(f); drawTimeline(); }
+}
+
+function drawTrails() {   // last 2 s of every hero's path, fading out
+  const now = frames[idx][0], span = R.meta.tickRate * 2, paths = new Map();
+  for (let i = idx; i >= 0 && now - frames[i][0] <= span; i--)
+    for (const o of frames[i][3]) {
+      if (o[1] !== 0 || o[7] < 0 || o[8] <= 0) continue;
+      const r = seen.get(o[7]); if (!r || r.ni !== o[2]) continue;
+      if (!paths.has(o[7])) paths.set(o[7], {team: o[6], pts: []});
+      paths.get(o[7]).pts.push([...pt(o[3], o[4], 0.05), (now - frames[i][0]) / span]);
+    }
+  ctx.save(); ctx.lineCap = 'round'; ctx.lineWidth = Math.max(2, tilePx * .12);
+  for (const [p, {team, pts}] of paths) {
+    ctx.strokeStyle = p === R.meta.ownPlayer ? C.own : teamCol(team);
+    for (let k = 1; k < pts.length; k++) {
+      if (Math.abs(pts[k][0] - pts[k - 1][0]) + Math.abs(pts[k][1] - pts[k - 1][1]) > tilePx * 3) continue;  // respawn jump
+      ctx.globalAlpha = .45 * (1 - pts[k][2]);
+      ctx.beginPath(); ctx.moveTo(pts[k - 1][0], pts[k - 1][1]); ctx.lineTo(pts[k][0], pts[k][1]); ctx.stroke();
+    }
+  }
+  ctx.restore();
+}
+
+function drawDeaths() {   // a cross where a hero died, for 3 s
+  const now = frames[idx][0], span = R.meta.tickRate * 3;
+  ctx.save(); ctx.lineCap = 'round';
+  for (const d of EV.deaths) {
+    if (d.tick > now || now - d.tick > span) continue;
+    const [X, Y] = pt(d.x, d.y, 0.05), k = tileP() * .35;
+    ctx.globalAlpha = 1 - (now - d.tick) / span;
+    ctx.strokeStyle = '#000'; ctx.lineWidth = 6;
+    ctx.beginPath(); ctx.moveTo(X - k, Y - k); ctx.lineTo(X + k, Y + k); ctx.moveTo(X + k, Y - k); ctx.lineTo(X - k, Y + k); ctx.stroke();
+    ctx.strokeStyle = d.pidx === R.meta.ownPlayer ? C.own : teamCol(d.team); ctx.lineWidth = 3; ctx.stroke();
+  }
+  ctx.restore();
+}
+
+// Scoreboard + gem countdown on the map itself, so exported videos are self-explanatory.
+function drawHud(f) {
+  const cd = f[5] && f[5].length > 6 ? f[5][5] : 0, cdTeam = f[5] && f[5].length > 6 ? f[5][6] : -1;
+  const s = f[0] / R.meta.tickRate, clock = `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+  const fs = Math.max(13, Math.min(22, tilePx * .8)), W = fs * 7.5, H = fs * 1.7, X = cv.width / 2, Y = 6;
+  ctx.save();
+  ctx.globalAlpha = .82; ctx.fillStyle = '#0b0d10';
+  ctx.beginPath(); ctx.roundRect(X - W / 2, Y, W, H, 8); ctx.fill();
+  ctx.globalAlpha = 1; ctx.textBaseline = 'middle'; ctx.font = `800 ${fs}px system-ui`;
+  ctx.textAlign = 'left'; ctx.fillStyle = C.team0; ctx.fillText(`◆ ${f[1]}`, X - W / 2 + 10, Y + H / 2 + 1);
+  ctx.textAlign = 'right'; ctx.fillStyle = C.team1; ctx.fillText(`${f[2]} ◆`, X + W / 2 - 10, Y + H / 2 + 1);
+  ctx.textAlign = 'center'; ctx.fillStyle = '#e6e8eb'; ctx.font = `600 ${fs * .8}px system-ui`;
+  ctx.fillText(clock, X, Y + H / 2 + 1);
+  if (cd > 0) {            // the in-game "team wins in N" countdown
+    const big = fs * 2.2, txt = Math.ceil(cd / R.meta.tickRate);
+    ctx.font = `900 ${big}px system-ui`; ctx.lineWidth = 6; ctx.strokeStyle = 'rgba(0,0,0,.8)';
+    ctx.fillStyle = teamCol(cdTeam);
+    const ly = Y + H + fs * .75, ny = ly + fs * .45 + big * .55;
+    ctx.strokeText(txt, X, ny); ctx.fillText(txt, X, ny);
+    ctx.font = `800 ${fs * .7}px system-ui`; ctx.lineWidth = 4;
+    const who = `${cdTeam === 0 ? 'BLUE' : 'RED'} WINS IN`;
+    ctx.strokeText(who, X, ly); ctx.fillText(who, X, ly);
+  }
+  ctx.restore();
+}
+
+// ---- timeline: gem scores, countdowns, deaths, one agent number; click/drag to seek ----
+const TL = {n: -1, img: null, t0: 0, t1: 1, w: 0, h: 0, col: null};
+function tlColumns() {
+  const sel = $('tlcol'), cols = [...EV.cols];
+  if (!cols.length) { sel.hidden = true; TL.col = null; return; }
+  if (sel.dataset.v !== cols.join()) {
+    sel.dataset.v = cols.join();
+    const pref = TL.col && cols.includes(TL.col) ? TL.col : ['value', 'return', 'reward'].find(c => cols.includes(c)) || cols[0];
+    sel.innerHTML = cols.map(c => `<option ${c === pref ? 'selected' : ''}>${c}</option>`).join('');
+    TL.col = pref; TL.n = -1;
+  }
+  sel.hidden = false;
+}
+function tlBuild() {
+  const c = $('tl'), dpr = DPR();
+  const w = Math.round(c.clientWidth * dpr), h = Math.round(c.clientHeight * dpr);
+  if (!w) return;
+  if (c.width !== w || c.height !== h) { c.width = w; c.height = h; }
+  const off = TL.img && TL.img.width === w && TL.img.height === h ? TL.img : document.createElement('canvas');
+  off.width = w; off.height = h;
+  const g = off.getContext('2d'), t0 = frames[0][0], t1 = Math.max(frames[frames.length - 1][0], t0 + 1);
+  const X = t => (t - t0) / (t1 - t0) * (w - 2) + 1, top = 4 * dpr, scoreH = h * .55, bot = h - 8 * dpr;
+  g.clearRect(0, 0, w, h);
+  let maxS = 10; for (const f of frames) maxS = Math.max(maxS, f[1], f[2]);
+  const Y = v => top + scoreH * (1 - v / maxS);
+  for (const f of frames) {            // countdown shading
+    if (!(f[5] && f[5][5] > 0)) continue;
+    g.fillStyle = f[5][6] === 0 ? 'rgba(59,130,246,.22)' : 'rgba(239,68,68,.22)'; g.fillRect(X(f[0]), top, Math.max(1, dpr), scoreH);
+  }
+  g.strokeStyle = 'rgba(255,255,255,.18)'; g.setLineDash([3 * dpr, 3 * dpr]); g.lineWidth = dpr;
+  g.beginPath(); g.moveTo(0, Y(10)); g.lineTo(w, Y(10)); g.stroke(); g.setLineDash([]);
+  for (const [k, col] of [[2, C.team1], [1, C.team0]]) {   // stepped gem scores
+    g.strokeStyle = col; g.lineWidth = 1.6 * dpr; g.beginPath();
+    frames.forEach((f, i) => { const x = X(f[0]), y = Y(f[k]); if (!i) g.moveTo(x, y); else { g.lineTo(x, Y(frames[i - 1][k])); g.lineTo(x, y); } });
+    g.stroke();
+  }
+  if (TL.col) {                        // agent number, own min..max scale, lower band
+    const vals = frames.map(f => f[7] && typeof f[7][TL.col] === 'number' ? f[7][TL.col] : null);
+    const nums = vals.filter(v => v !== null);
+    if (nums.length) {
+      let lo = Math.min(...nums), hi = Math.max(...nums); if (hi - lo < 1e-9) { lo -= 1; hi += 1; }
+      const yb = top + scoreH + 3 * dpr, hb = bot - yb - 2 * dpr, V = v => yb + hb * (1 - (v - lo) / (hi - lo));
+      if (lo < 0 && hi > 0) { g.strokeStyle = 'rgba(255,255,255,.12)'; g.beginPath(); g.moveTo(0, V(0)); g.lineTo(w, V(0)); g.stroke(); }
+      g.strokeStyle = '#fde047'; g.lineWidth = 1.2 * dpr; g.beginPath(); let started = false;
+      vals.forEach((v, i) => { if (v === null) return; const x = X(frames[i][0]); if (!started) { g.moveTo(x, V(v)); started = true; } else g.lineTo(x, V(v)); });
+      g.stroke();
+      TL.range = [lo, hi];
+    }
+  }
+  for (const d of EV.deaths) {         // deaths: ticks along the bottom edge
+    const x = X(d.tick);
+    g.fillStyle = d.pidx === R.meta.ownPlayer ? C.own : teamCol(d.team);
+    g.beginPath(); g.moveTo(x, h - 7 * dpr); g.lineTo(x - 3.5 * dpr, h - 1); g.lineTo(x + 3.5 * dpr, h - 1); g.fill();
+  }
+  Object.assign(TL, {img: off, n: frames.length, t0, t1, w, h, dpr});
+}
+function drawTimeline() {
+  if (!R || !frames.length) return;
+  if (TL.n !== frames.length || !TL.img || TL.w !== Math.round($('tl').clientWidth * DPR())) tlBuild();
+  if (!TL.img) return;
+  const g = $('tl').getContext('2d'), f = frames[idx];
+  g.clearRect(0, 0, TL.w, TL.h); g.drawImage(TL.img, 0, 0);
+  const x = (f[0] - TL.t0) / (TL.t1 - TL.t0) * (TL.w - 2) + 1;
+  g.fillStyle = '#fff'; g.fillRect(x - TL.dpr / 2, 0, TL.dpr, TL.h);
+  const deaths = EV.deaths.filter(d => d.tick <= f[0]);
+  const by = t => deaths.filter(d => d.team === t).length;
+  const v = TL.col && f[7] && typeof f[7][TL.col] === 'number' ? ` · ${TL.col} ${f[7][TL.col].toFixed(3)}` : '';
+  $('tlinfo').textContent = `deaths blue ${by(0)} · red ${by(1)}${v}`;
+}
+function tlSeek(e) {
+  if (!R || !frames.length) return;
+  const b = $('tl').getBoundingClientRect(), fr = Math.max(0, Math.min(1, (e.clientX - b.left) / b.width));
+  setIdx(frameAtTick(TL.t0 + fr * (TL.t1 - TL.t0)));
+}
+function jumpEvent(dir) {      // N / B: next / previous death or gem score change
+  const now = frames[idx][0], ticks = [...EV.deaths, ...EV.scores].map(e => e.tick).sort((a, b) => a - b);
+  const t = dir > 0 ? ticks.find(t => t > now) : ticks.reverse().find(t => t < now - 10);
+  if (t !== undefined) setIdx(frameAtTick(Math.max(frames[0][0], t - (dir > 0 ? 10 : 10))));
+}
+
+// ---- video export: records the map canvas while playing from the current frame to the end ----
+let REC = null;
+function startRec() {
+  if (REC || !R || !frames.length || typeof MediaRecorder === 'undefined') return;
+  const type = ['video/webm;codecs=vp9', 'video/webm;codecs=vp8', 'video/webm'].find(t => MediaRecorder.isTypeSupported(t));
+  const mr = new MediaRecorder(cv.captureStream(30), {mimeType: type, videoBitsPerSecond: 6e6}), chunks = [];
+  mr.ondataavailable = e => e.data.size && chunks.push(e.data);
+  mr.onstop = () => {
+    const a = document.createElement('a'), m = R.meta;
+    a.href = URL.createObjectURL(new Blob(chunks, {type: 'video/webm'}));
+    a.download = `${m.loc}_s${m.seed}_t${REC.from}.webm`; a.click();
+    REC = null; $('rec').classList.remove('on'); $('rec').textContent = '⏺ video';
+  };
+  if (idx >= frames.length - 1) setIdx(0);
+  REC = {mr, from: frames[idx][0]};
+  setFollow(false); mr.start(1000); $('rec').classList.add('on'); $('rec').textContent = '⏹ stop';
+  setPlaying(true);
+}
+function stopRec() { if (REC && REC.mr.state === 'recording') { draw(); setTimeout(() => REC && REC.mr.stop(), 1500); } }
+
+// Inputs the own player sent (frame element 6, applied during the step that led to the frame). Presses stay visible
+// for ~0.5 s so they can be seen during playback; the move arrow shows the current steering direction.
+function drawInputs(objs) {
+  const me = objs.find(o => isHero(o) && o[7] === R.meta.ownPlayer && o[8] > 0);
+  if (!me) return;
+  const [X, Y] = pt(me[3], me[4], 0.05), now = frames[idx][0], hold = R.meta.tickRate / 2, tilePx = tileP();
+  let steered = false;
+  ctx.save(); ctx.lineCap = 'round';
+  if (R.meta.range && R.meta.range[0] > 0) {   // attack range
+    ctx.strokeStyle = 'rgba(255,255,255,.28)'; ctx.lineWidth = 1.5; ctx.setLineDash([5, 5]);
+    groundCircle(me[3], me[4], R.meta.range[0]); ctx.stroke(); ctx.setLineDash([]);
+  }
+  for (let i = idx; i >= 0 && now - frames[i][0] <= hold; i--) {
+    const ins = frames[i][6] || [], age = (now - frames[i][0]) / hold;
+    for (const [type, wx, wy, tgt] of ins) {
+      if (type === 2 || type === 3) {                                 // steering: latest move/stop only
+        if (steered || i !== idx) continue;
+        steered = true;
+        if (type === 3) continue;
+        const dx0 = wx - me[3], dy0 = wy - me[4], l0 = Math.hypot(dx0, dy0) || 1;
+        const tgt = pt(me[3] + dx0 / l0 * R.meta.tileSize * 1.4, me[4] + dy0 / l0 * R.meta.tileSize * 1.4, 0.05);
+        const dx = tgt[0] - X, dy = tgt[1] - Y, a = Math.atan2(dy, dx), ex = tgt[0], ey = tgt[1];
+        ctx.strokeStyle = 'rgba(255,255,255,.9)'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(X, Y); ctx.lineTo(ex, ey);
+        ctx.lineTo(ex - 6 * Math.cos(a - .5), ey - 6 * Math.sin(a - .5)); ctx.moveTo(ex, ey);
+        ctx.lineTo(ex - 6 * Math.cos(a + .5), ey - 6 * Math.sin(a + .5)); ctx.stroke();
+      } else if (type === 0 || type === 1 || type === 8) {           // attack / super / gadget press
+        ctx.globalAlpha = 1 - age * .8;
+        ctx.strokeStyle = type === 0 ? '#fb923c' : type === 1 ? '#fde047' : '#4ade80';
+        ctx.lineWidth = type === 1 ? 4 : 2; ctx.setLineDash(type === 8 ? [4, 4] : []);
+        ctx.beginPath(); ctx.moveTo(X, Y); ctx.lineTo(...pt(wx, wy, 0.05)); ctx.stroke();
+        const t = tgt && objs.find(o => o[0] === tgt);
+        if (t) { groundCircle(t[3], t[4], R.meta.tileSize * .7); ctx.stroke(); }
+        ctx.globalAlpha = 1; ctx.setLineDash([]);
+      }
+    }
+  }
+  ctx.restore();
+}
+
+function hud(f) {
+  let note = null;
+  for (let i = idx; i >= 0 && i > idx - 50 && !note; i--) note = frames[i][7] || null;
+  $('notecard').hidden = !note;
+  if (note) $('note').innerHTML = Object.entries(note).map(([k, v]) =>
+    `<span>${k}</span><span style="color:var(--text)">${typeof v === 'number' ? (Number.isInteger(v) ? v : v.toFixed(3)) : typeof v === 'string' ? v : JSON.stringify(v)}</span>`).join('');
+  const own = f[5];
+  if (own) {
+    $('owncard').hidden = false;
+    $('ownsub').textContent = `${DISPLAY[R.meta.hero] || R.meta.hero}${own[4] ? '' : ' · respawning'}`;
+    $('ammo').innerHTML = Array.from({length: own[1] || 3}, (_, k) =>
+      `<div><div style="width:${Math.max(0, Math.min(1, own[0] / 1000 - k)) * 100}%"></div></div>`).join('');
+    const sf = own[3] > 0 ? Math.min(1, own[2] / own[3]) : 0;
+    $('superbar').firstChild.style.width = sf * 100 + '%'; $('superbar').classList.toggle('full', sf >= 1);
+    $('supertxt').textContent = sf >= 1 ? '· READY' : `· ${Math.round(sf * 100)}%`;
+  }
+  $('s0').textContent = f[1]; $('s1').textContent = f[2];
+  const s = f[0] / R.meta.tickRate; $('clock').textContent = `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+  $('tick').textContent = `tick ${f[0]}`; $('scrub').value = idx;
+  const live = new Map(f[3].filter(isHero).map(o => [o[7], o]));
+  $('units').innerHTML = roster.map(u => {
+    const o = live.get(u.pidx), n = names[u.ni], hp = o ? o[8] : 0, maxhp = o ? o[9] : u.maxhp;
+    const fr = maxhp > 0 ? Math.max(0, hp / maxhp) : 0, own = u.pidx === R.meta.ownPlayer;
+    const gems = o && o[10] > 0 ? ` <b style="color:var(--gem)">◆${o[10]}</b>` : '';
+    const deaths = EV.deaths.filter(d => d.pidx === u.pidx && d.tick <= f[0]).length;
+    return `<div class="unit ${hp <= 0 ? 'dead' : ''}"><i class="dot" style="background:${teamCol(u.team)};${own ? 'box-shadow:0 0 0 2px ' + C.own : ''}"></i>
+      <div>${DISPLAY[n] || n}${gems} <span class="muted">${own ? '(you)' : 'bot'}${hp <= 0 ? ' · respawning' : ''}${deaths ? ' · ✕' + deaths : ''}</span><div class="hp"><div style="width:${fr * 100}%"></div></div></div>
+      <span class="muted" style="text-align:right">${Math.max(0, hp)}/${maxhp}</span></div>`;
+  }).join('');
+}
+
+// Playback runs on ticks, not frame indices: recordings have one frame per tick, agent episodes one per decision.
+let ptick = 0;
+function setIdx(i) {
+  if (!frames.length) return;
+  idx = Math.max(0, Math.min(frames.length - 1, i)); ptick = frames[idx][0]; draw();
+  if (WATCH) { setFollow(false); setPlaying(false); }
+}
+function stepTicks(dt) {      // jump by about dt ticks (at least one frame)
+  const target = frames[idx][0] + dt, d = Math.sign(dt);
+  let i = idx + d;
+  while (i > 0 && i < frames.length - 1 && (d > 0 ? frames[i][0] < target : frames[i][0] > target)) i += d;
+  setIdx(i);
+}
+function setPlaying(p) { playing = p; $('play').textContent = p ? '❚❚ Pause' : '▶ Play'; last = performance.now(); }
+function loop(t) {
+  if (LIVE && R && frames.length) liveDraw(t);
+  else if (playing && R && frames.length) {
+    ptick += (t - last) / 1000 * R.meta.tickRate * parseFloat($('speed').value); last = t;
+    if (WATCH && WATCH.follow) followCatchUp();
+    while (idx < frames.length - 1 && frames[idx + 1][0] <= ptick) idx++;
+    if (idx >= frames.length - 1) {
+      ptick = frames[idx][0];
+      if (!WATCH) setPlaying(false);     // watching: wait at the end for more frames
+      if (REC && (!WATCH || WATCH.done)) stopRec();
+    }
+    const nx = frames[idx + 1];
+    draw(nx ? Math.min(1, (ptick - frames[idx][0]) / Math.max(1, nx[0] - frames[idx][0])) : 0);
+  } else last = t;
+  requestAnimationFrame(loop);
+}
+
+$('play').onclick = () => {
+  if (!frames.length) return;
+  if (idx >= frames.length - 1 && !WATCH) { idx = 0; ptick = frames[0][0]; }
+  setFollow(false);
+  setPlaying(!playing);
+};
+$('inputs').onchange = () => draw();
+$('back').onclick = () => setIdx(idx - 1);
+$('fwd').onclick = () => setIdx(idx + 1);
+$('scrub').oninput = e => setIdx(+e.target.value);
+$('labels').onchange = () => draw();
+$('trails').onchange = () => draw();
+$('hudon').onchange = () => draw();
+$('view3d').onchange = () => { resize(); draw(); };
+$('cam').onchange = () => draw();
+$('tlcol').onchange = e => { TL.col = e.target.value; TL.n = -1; draw(); };
+$('rec').onclick = () => REC ? stopRec() : startRec();
+{ let drag = false;
+  $('tl').addEventListener('mousedown', e => { drag = true; tlSeek(e); });
+  addEventListener('mousemove', e => { if (drag) tlSeek(e); });
+  addEventListener('mouseup', () => drag = false); }
+addEventListener('keydown', e => {
+  if (LIVE) return;
+  if (e.code === 'Space') { e.preventDefault(); $('play').click(); }
+  if (e.code === 'ArrowLeft') e.shiftKey ? stepTicks(-R.meta.tickRate) : setIdx(idx - 1);
+  if (e.code === 'ArrowRight') e.shiftKey ? stepTicks(R.meta.tickRate) : setIdx(idx + 1);
+  if (e.code === 'Home') setIdx(0);
+  if (e.code === 'End') setIdx(frames.length - 1);
+  if (e.code === 'KeyN') jumpEvent(1);
+  if (e.code === 'KeyB') jumpEvent(-1);
+  if (e.code === 'BracketLeft' || e.code === 'BracketRight') {
+    const sp = $('speed'); sp.selectedIndex = Math.max(0, Math.min(sp.options.length - 1, sp.selectedIndex + (e.code === 'BracketRight' ? 1 : -1)));
+  }
+});
+addEventListener('resize', () => { resize(); TL.n = -1; draw(); });
+cv.addEventListener('mousemove', e => {
+  if (!R) return;
+  const b = cv.getBoundingClientRect(), mx = e.clientX - b.left, my = e.clientY - b.top;
+  let best = null, bd = (tilePx * .8) ** 2;
+  for (const o of frames[idx][3]) {
+    const q = use3d() ? GFX.project(o[3] / R.meta.tileSize, -o[4] / R.meta.tileSize, 0.5) : [px(o[3]), px(o[4])];
+    const d = (q[0] - mx) ** 2 + (q[1] - my) ** 2; if (d < bd) { bd = d; best = o; } }
+  const tip = $('tip');
+  if (!best) { tip.style.display = 'none'; return; }
+  const [gid, type, ni, x, y, z, team, pidx, hp, maxhp] = best;
+  tip.textContent = `${names[ni]}${DISPLAY[names[ni]] ? ' (' + DISPLAY[names[ni]] + ')' : ''}\n${TYPE[type] || type} · team ${team} · player ${pidx}\n` +
+    `pos ${x}, ${y}${z ? ' z ' + z : ''}${maxhp > 0 ? '\nhp ' + hp + '/' + maxhp : ''}\ngid 0x${gid.toString(16)}`;
+  const sb = $('stage').getBoundingClientRect();
+  tip.style.left = (e.clientX - sb.left + 14) + 'px'; tip.style.top = (e.clientY - sb.top + 14) + 'px'; tip.style.display = 'block';
+});
+cv.addEventListener('mouseleave', () => $('tip').style.display = 'none');
+addEventListener('dragover', e => { e.preventDefault(); $('drop').style.display = 'flex'; });
+addEventListener('dragleave', e => { if (!e.relatedTarget) $('drop').style.display = 'none'; });
+addEventListener('drop', e => {
+  e.preventDefault(); $('drop').style.display = 'none';
+  const f = e.dataTransfer.files[0]; if (f) f.text().then(t => { setPlaying(false); load(JSON.parse(t)); });
+});
+
+// ---- live mode: page served by tools/play.py. The battle runs there on its own 20 ticks/s clock (like the game's
+// server); this page gets every tick over a server-sent event stream (/events), sends the controls (/input: at most
+// ~25 times a second, presses at once, plus a heartbeat) and resets / pauses (/control). It draws one tick behind the
+// newest frame, interpolated, so motion stays smooth on a jittery network (a phone on Wi-Fi). Touch screens get
+// on-screen sticks and buttons (startTouch).
+let LIVE = null, TOUCHUI = false;
+const post = (path, body) => fetch(path, {method: 'POST', body: JSON.stringify(body || {})});
+const MOVE = {KeyW: [0, -1], ArrowUp: [0, -1], KeyS: [0, 1], ArrowDown: [0, 1], KeyA: [-1, 0], ArrowLeft: [-1, 0], KeyD: [1, 0], ArrowRight: [1, 0]};
+const ATTACK = new Set(['Space', 'Enter', 'KeyJ']), SUPER = new Set(['KeyE', 'KeyK']);
+
+function liveMsg(m) {
+  const L = LIVE;
+  if (m.type === 'state') { L.paused = m.paused; L.redraw = true; return; }
+  if (m.type === 'error') { L.error = m.msg; console.warn('play.py:', m.msg); return; }
+  if (m.type === 'reset') {
+    if (!R || m.battle !== L.battle) { L.battle = m.battle; L.saved = null; load({meta: m.meta, frames: [], names: []}); }
+    L.paused = !!m.paused;
+  }
+  for (const [i, n] of m.names) names[i] = n;
+  if (frames.length && m.frame[0] <= frames[frames.length - 1][0]) return;   // rejoined: already have it
+  frames.push(m.frame); gridAt.push(m.frame[4] ? frames.length - 1 : gridAt[gridAt.length - 1]);
+  noteRoster(m.frame); noteEvents(frames.length - 1);
+  L.arrived = performance.now(); L.done = m.done; L.n++;
+  if (m.type === 'reset') L.pos = L.base = null;
+  else {                        // how late this frame came, against the earliest arrival seen (decays: a spike passes)
+    const tick = 1000 / R.meta.tickRate, off = L.arrived - (frames.length - 1) * tick;
+    L.base = L.base == null ? off : Math.min(off, L.base + .5);
+    const late = off - L.base;
+    if (late > 500) { L.base = off; L.late = 0; }          // a pause or stall, not jitter: start over
+    else L.late = Math.max(late, L.late - 1);              // the recent worst lateness, forgets ~20 ms/s
+    L.delay = Math.max(1, Math.min(3, .75 + L.late / tick));   // ticks behind the newest frame, 50-150 ms
+  }
+  if (m.saved) L.saved = m.saved;
+  if (m.type === 'reset') liveAssets(m.battle);
+}
+
+function liveAssets(battle) {   // a new battle: load its 3D models (all at once), then play.py starts it (Game.holding)
+  const L = LIVE;
+  if (L.assetsFor === battle) return;
+  L.assetsFor = battle; L.loading = true; L.redraw = true;
+  const heroes = [...new Set(frames[0][3].filter(o => o[1] === 0).map(o => names[o[2]]))];
+  G3.loaded.then(() => G3.ok && GFX.prepare(R, heroes).then(() => { G3.ready = true; resize(); }))
+    .catch(e => console.warn('3D assets:', e))
+    .then(() => {
+      if (L.assetsFor !== battle) return;
+      L.loading = false; L.redraw = true;
+      liveControl({ready: battle});
+    });
+}
+
+function liveDraw(t) {          // from the animation loop: a steady clock L.delay ticks behind the newest frame
+  // (playout buffer): on Wi-Fi frames arrive unevenly, and drawing them as they come froze and then jumped the picture.
+  // The clock runs at real time, up to 30% faster or slower to keep its distance; far off (a join, a stall) it jumps.
+  const L = LIVE, k = frames.length - 1, tick = 1000 / R.meta.tickRate;
+  const dt = L.lastT ? Math.min(t - L.lastT, 250) : 0;
+  L.lastT = t; L.fps++;
+  if (L.done || L.pos == null) L.pos = Math.max(0, k - (L.done ? 0 : L.delay));
+  else {
+    const err = k - L.delay - L.pos;
+    L.pos = Math.abs(err) > 4 ? k - L.delay : L.pos + dt / tick * (1 + Math.max(-.3, Math.min(.3, err * .2)));
+    L.pos = Math.max(0, Math.min(k, L.pos));
+  }
+  const at = Math.min(k, Math.floor(L.pos)), a = at < k ? L.pos - at : 0;
+  const key = at + ':' + a;
+  if (key === L.drawn && !L.redraw && !(G3.ok && GFX.isDirty())) return;
+  L.drawn = key; L.redraw = false; idx = at; draw(a);
+}
+
+function liveStatus() {
+  const L = LIVE, txt = L.done && L.saved ? 'replay saved to scratch/replays'
+    : `${L.n} ticks/s · ${L.fps} fps · ping ${Math.round(L.ping)} ms · buffer ${Math.round(L.delay * 1000 / ((R && R.meta.tickRate) || 20))} ms${L.ws && L.ws.readyState === 1 ? ' ws' : ''}${L.paused ? ' · paused' : ''}${L.error ? ' · ERROR ' + L.error : ''}`;
+  $('livestat').textContent = '· ' + txt;
+  if (TOUCHUI) $('tstat').textContent = txt;
+  L.n = L.fps = 0;
+}
+
+function ownPos() {
+  const o = frames.length && frames[idx][3].find(o => isHero(o) && o[7] === R.meta.ownPlayer);
+  return o && [o[3], o[4]];
+}
+
+function aimAt(ev, range) {     // canvas click -> aim vector as a fraction of the skill's range
+  const p = ownPos(), b = cv.getBoundingClientRect();
+  if (!p) return null;
+  let wx = (ev.clientX - b.left) / tilePx * R.meta.tileSize, wy = (ev.clientY - b.top) / tilePx * R.meta.tileSize;
+  if (use3d()) { const g = GFX.unproject(ev.clientX - b.left, ev.clientY - b.top); wx = g[0] * R.meta.tileSize; wy = -g[1] * R.meta.tileSize; }
+  return [(wx - p[0]) / (range || 2000), (wy - p[1]) / (range || 2000)];
+}
+
+function liveInput(press) {     // sends the stick + held buttons (+ a press); stick changes at most once per tick
+  const L = LIVE, ws = L.ws && L.ws.readyState === 1;
+  if (press) L.presses.push(press);
+  // POST fallback: one request in flight at a time. On a slow network requests sent faster than they return queue
+  // up and the input lags by seconds; anything newer goes out (as the latest state) when the request returns.
+  if (!ws && L.busy && performance.now() - L.sent < 1500) { L.again = true; return; }
+  const wait = (ws ? 25 : 40) - (performance.now() - L.sent);
+  if (!press && wait > 0) { L.timer = L.timer || setTimeout(() => { L.timer = 0; liveInput(); }, wait); return; }
+  L.sent = performance.now();
+  let mx = 0, my = 0;
+  if (L.stick) [mx, my] = L.stick;
+  else for (const [c, [dx, dy]] of Object.entries(MOVE)) if (L.keys.has(c)) { mx += dx; my += dy; }
+  const hold = [...L.keys].some(c => ATTACK.has(c)) ? ['atk'] : [];
+  if ([...L.keys].some(c => SUPER.has(c))) hold.push('sup');
+  const body = {id: L.id, mx, my, hold, press: L.presses.splice(0)}, t0 = L.sent;
+  if (ws) { L.ws.send(JSON.stringify(body)); return; }
+  L.busy = true; L.again = false;
+  post('/input', body)
+    .then(r => { if (r.ok) L.ping = performance.now() - t0; else L.fetchError = 'input HTTP ' + r.status; })
+    .catch(e => { L.fetchError = 'input ' + e; })
+    .finally(() => { if (L.sent !== t0) return; L.busy = false; if (L.again) liveInput(); });
+}
+function liveSocket() {        // the input channel: a WebSocket (play.py /ws), reconnects; POST /input while it is down
+  const L = LIVE;
+  try { L.ws = new WebSocket('ws://' + location.host + '/ws'); } catch (e) { L.ws = null; return; }
+  L.ws.onmessage = e => { const m = JSON.parse(e.data); if (m.pong) L.ping = performance.now() - m.pong; };
+  L.ws.onclose = () => { L.ws = null; setTimeout(liveSocket, 2000); };
+}
+const liveControl = body => post('/control', {id: LIVE.id, ...body}).catch(() => {});
+
+function drawAim(objs) {        // touch: the aim of the stick being dragged: a line to full range, a dot at the drag length
+  const A = LIVE && LIVE.aim, me = A && objs.find(o => isHero(o) && o[7] === R.meta.ownPlayer && o[8] > 0);
+  if (!me) return;
+  const range = (R.meta.range && R.meta.range[A.sup ? 1 : 0]) || 2000, len = Math.min(1, Math.hypot(A.v[0], A.v[1]));
+  const ang = Math.atan2(A.v[1], A.v[0]), at = f => pt(me[3] + Math.cos(ang) * range * f, me[4] + Math.sin(ang) * range * f, 0.05);
+  const [X, Y] = pt(me[3], me[4], 0.05), [EX, EY] = at(1), [DX, DY] = at(len), u = tileP();
+  ctx.save(); ctx.lineCap = 'round'; ctx.strokeStyle = ctx.fillStyle = A.sup ? '#fde047' : '#ffffff';
+  ctx.globalAlpha = .45; ctx.lineWidth = Math.max(6, u * .4);
+  ctx.beginPath(); ctx.moveTo(X, Y); ctx.lineTo(EX, EY); ctx.stroke();
+  ctx.globalAlpha = .9; ctx.beginPath(); ctx.arc(DX, DY, Math.max(5, u * .28), 0, 7); ctx.fill();
+  ctx.restore();
+}
+
+function startLive() {
+  for (const [rel, href] of [['manifest', '/manifest.webmanifest'], ['apple-touch-icon', '/icon.png']])
+    document.head.append(Object.assign(document.createElement('link'), {rel, href}));
+  $('cam').value = 'follow';     // as in the game
+  LIVE = {id: Math.random().toString(36).slice(2), keys: new Set(), presses: [], stick: null, aim: null, sent: 0, timer: 0, busy: false, again: false, ws: null,
+          pos: null, base: null, late: 0, delay: 1, lastT: 0, fps: 0,
+          ping: 0, n: 0, arrived: 0, battle: null, done: false, paused: false, saved: null, drawn: '', redraw: false};
+  $('livecard').hidden = false; $('playcard').hidden = true;
+  addEventListener('keydown', e => {
+    if (MOVE[e.code] || ATTACK.has(e.code)) e.preventDefault();
+    if (e.repeat) return;
+    if (e.code === 'KeyP') { liveControl({pause: !LIVE.paused}); return; }
+    if (e.code === 'KeyR') { liveControl({reset: 'next'}); return; }
+    LIVE.keys.add(e.code);
+    liveInput(ATTACK.has(e.code) ? {atk: 1} : SUPER.has(e.code) ? {sup: 1} : e.code === 'KeyQ' ? {gadget: 1} : undefined);
+  });
+  addEventListener('keyup', e => { if (LIVE.keys.delete(e.code)) liveInput(); });
+  addEventListener('blur', () => { LIVE.keys.clear(); liveInput(); });
+  cv.addEventListener('contextmenu', e => e.preventDefault());
+  cv.addEventListener('mousedown', e => {
+    const sup = e.button === 2, p = (e.button === 0 || sup) && aimAt(e, R && R.meta.range && R.meta.range[sup ? 1 : 0]);
+    if (p) liveInput(sup ? {sup: 2, sx: p[0], sy: p[1]} : {atk: 2, ax: p[0], ay: p[1]});
+  });
+  document.addEventListener('visibilitychange', () => {   // switching away pauses the battle, coming back resumes it
+    if (document.hidden && !LIVE.paused && !LIVE.done) { LIVE.autoPaused = true; liveControl({pause: true, auto: true}); }
+    else if (!document.hidden && LIVE.autoPaused) { LIVE.autoPaused = false; liveControl({pause: false, auto: true}); }
+  });
+  if (matchMedia('(pointer: coarse)').matches || location.hash.includes('touch')) startTouch();
+  // report errors and the connection state to play.py (scratch/play_log.txt): phones have no console to look at
+  const report = what => post('/log', {what, ua: navigator.userAgent, frames: frames ? frames.length : -1,
+    es: es.readyState, ping: Math.round(LIVE.ping), error: LIVE.error || null, fetchError: LIVE.fetchError || null,
+    webgl2: G3.ok, ready: G3.ready, screen: [innerWidth, innerHeight, devicePixelRatio], rot: document.body.classList.contains('rot'),
+    standalone: !!(navigator.standalone || matchMedia('(display-mode: standalone)').matches)}).catch(() => {});
+  addEventListener('error', e => report('error: ' + e.message + ' @' + e.lineno + ':' + e.colno));
+  addEventListener('unhandledrejection', e => report('rejection: ' + (e.reason && (e.reason.stack || e.reason))));
+  const es = new EventSource('/events');
+  for (const t of [1, 3, 8, 20]) setTimeout(() => report('status after ' + t + ' s'), t * 1000);
+  es.onmessage = e => liveMsg(JSON.parse(e.data));
+  es.onopen = () => liveControl({start: true});            // starts the first battle; later pages join the running one
+  es.onerror = () => { $('livestat').textContent = '· connection lost, retrying (is tools/play.py still running?)'; };
+  liveSocket();
+  setInterval(() => { if (!document.hidden) liveInput(); }, 250);   // heartbeat: play.py lets go of the stick without it
+  setInterval(() => { if (LIVE.ws && LIVE.ws.readyState === 1) LIVE.ws.send(JSON.stringify({ping: performance.now()})); }, 1000);
+  setInterval(() => { if (!document.hidden && !LIVE.paused && !LIVE.done) report('stats ' + $('livestat').textContent); }, 20000);
+  setInterval(liveStatus, 1000);
+}
+
+// Touch controls, as in the game: left thumb anywhere on the left half = movement stick; right: attack stick (tap =
+// auto-aim, drag = aim, release = fire, drag back to the middle = cancel; a touch anywhere else on the right half
+// counts as the attack stick too), super stick (the same, once charged), gadget.
+// Always landscape: a portrait screen gets the game turned by 90 degrees (fitTouch), so an iPhone with rotation lock
+// is held sideways too. All touch positions are taken in the game's own (unturned) frame (local).
+const TROT = {ccw: false};
+try { TROT.ccw = localStorage.getItem('touchCcw') === '1'; } catch (e) { /* private mode */ }
+
+function fitTouch() {           // portrait -> turn #app by 90 degrees (clockwise: hold the phone with its top to the left)
+  const app = $('app'), W = innerWidth, H = innerHeight, rot = H > W;
+  document.body.classList.toggle('rot', rot); document.body.classList.toggle('ccw', rot && TROT.ccw);
+  app.style.width = rot ? H + 'px' : ''; app.style.height = rot ? W + 'px' : '';
+  app.style.transform = !rot ? '' : TROT.ccw ? `translateY(${H}px) rotate(-90deg)` : `translateX(${W}px) rotate(90deg)`;
+}
+
+function startTouch() {
+  TOUCHUI = true;
+  document.documentElement.classList.add('touch'); document.body.classList.add('touch'); $('touch').hidden = false;
+  document.querySelector('meta[name=viewport]').content = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover';
+  // iOS Safari ignores user-scalable=no: block its zoom gestures (double tap, pinch) and the page scrolling by hand.
+  // touchend's default is the double-tap zoom and the click, so the buttons act on pointerup instead of click.
+  const stop = e => e.preventDefault();
+  for (const t of ['gesturestart', 'gesturechange', 'gestureend', 'dblclick', 'touchmove', 'touchend'])
+    document.addEventListener(t, stop, {passive: false});
+  const tap = (id, fn) => $(id).addEventListener('pointerup', fn);
+  resize();
+  const T = $('touch'), act = new Map();                 // pointerId -> the stick it drags
+  const local = e => {          // the touch in #touch's own coordinates, whether the page is turned or not
+    const b = T.getBoundingClientRect();
+    if (!document.body.classList.contains('rot')) return [e.clientX - b.left, e.clientY - b.top];
+    return TROT.ccw ? [b.bottom - e.clientY, e.clientX - b.left] : [e.clientY - b.top, b.right - e.clientX];
+  };
+  const knob = (s, v) => { s.el.firstElementChild.style.transform = `translate(${v[0] * 114}%, ${v[1] * 114}%)`; };
+  const vec = (e, s) => {
+    const r = s.r || 60, [lx, ly] = local(e);
+    let x = (lx - s.ox) / r, y = (ly - s.oy) / r; const l = Math.hypot(x, y);
+    if (l > 1) { x /= l; y /= l; }
+    return Number.isFinite(x) && Number.isFinite(y) ? [x, y] : [0, 0];
+  };
+  T.addEventListener('pointerdown', e => {
+    if (e.target.closest('button, #thelp')) return;
+    e.preventDefault();
+    const pad = e.target.closest('.pad'), [lx, ly] = local(e);
+    let s;
+    if (pad) {
+      if (pad.id === 'tgad') { liveInput({gadget: 1}); return; }
+      if (pad.id === 'tsup' && !pad.classList.contains('ready')) return;
+      const r = pad.offsetWidth / 2;
+      s = {kind: pad.id, el: pad, ox: pad.offsetLeft + r, oy: pad.offsetTop + r, r, v: [0, 0], aimed: false};
+    } else if (lx < T.clientWidth / 2) {
+      const st = $('tstick');
+      st.style.left = lx + 'px'; st.style.top = ly + 'px'; st.classList.add('on');
+      s = {kind: 'move', el: st, ox: lx, oy: ly, r: st.offsetWidth / 2, v: [0, 0]};
+    } else {                    // right half, off the buttons (a thumb that missed while running): the attack stick,
+      const pad = $('tatk');    // centred where the thumb landed
+      s = {kind: 'tatk', el: pad, ox: lx, oy: ly, r: pad.offsetWidth / 2, v: [0, 0], aimed: false};
+    }
+    T.setPointerCapture(e.pointerId);
+    act.set(e.pointerId, s);
+  });
+  T.addEventListener('pointermove', e => {
+    const s = act.get(e.pointerId);
+    if (!s) return;
+    s.v = vec(e, s); knob(s, s.v);
+    const l = Math.hypot(s.v[0], s.v[1]);
+    if (s.kind === 'move') { LIVE.stick = l > .25 ? [s.v[0] / l, s.v[1] / l] : [0, 0]; liveInput(); return; }
+    s.aimed = s.aimed || l > .3;
+    LIVE.aim = l > .3 ? {sup: s.kind === 'tsup', v: s.v} : null; LIVE.redraw = true;
+  });
+  const end = e => {
+    const s = act.get(e.pointerId);
+    if (!s) return;
+    act.delete(e.pointerId); knob(s, [0, 0]);
+    if (s.kind === 'move') { s.el.classList.remove('on'); LIVE.stick = null; liveInput(); return; }
+    LIVE.aim = null; LIVE.redraw = true;
+    if (e.type === 'pointercancel') return;
+    const l = Math.hypot(s.v[0], s.v[1]), sup = s.kind === 'tsup';
+    if (l > .3) liveInput(sup ? {sup: 2, sx: s.v[0], sy: s.v[1]} : {atk: 2, ax: s.v[0], ay: s.v[1]});
+    else if (!s.aimed) liveInput(sup ? {sup: 1} : {atk: 1});   // a tap: the game's auto-aim
+  };
+  T.addEventListener('pointerup', end);
+  T.addEventListener('pointercancel', end);
+  tap('tpause', () => liveControl({pause: !LIVE.paused}));
+  tap('tagain', () => liveControl({reset: 'next'}));
+  tap('trot', () => {           // held the other way round (rotation lock on): turn the game by 180 degrees
+    TROT.ccw = !TROT.ccw;
+    try { localStorage.setItem('touchCcw', TROT.ccw ? '1' : '0'); } catch (e) { /* private mode */ }
+    resize(); LIVE.redraw = true;
+  });
+  // full screen: Android has the Fullscreen API (plus the landscape lock); iPhone Safari has neither, there the page
+  // is full screen only when started from the home screen (manifest + apple-mobile-web-app-capable) -> show how
+  const d = document.documentElement, req = d.requestFullscreen || d.webkitRequestFullscreen;
+  const standalone = navigator.standalone || matchMedia('(display-mode: standalone), (display-mode: fullscreen)').matches;
+  $('tfull').hidden = standalone;
+  tap('tfull', () => {
+    if (document.fullscreenElement || document.webkitFullscreenElement) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+    else if (req && (document.fullscreenEnabled || document.webkitFullscreenEnabled))
+      Promise.resolve(req.call(d)).then(() => screen.orientation && screen.orientation.lock && screen.orientation.lock('landscape')).catch(() => {});
+    else $('thelp').hidden = false;
+  });
+  $('thelp').addEventListener('pointerup', () => { $('thelp').hidden = true; });
+}
+
+function touchHud(f) {          // super charge on the super button, pause / play-again buttons
+  const own = f[5] || [], pct = own[3] > 0 ? Math.min(100, Math.round(own[2] / own[3] * 100)) : 0;
+  const key = `${pct}|${LIVE.done}|${LIVE.paused}`;
+  if (key === touchHud.key) return;
+  touchHud.key = key;
+  const sup = $('tsup');
+  sup.classList.toggle('ready', pct >= 100);
+  sup.style.background = `conic-gradient(rgba(253,224,71,.55) ${pct}%, rgba(0,0,0,.25) 0)`;
+  $('tagain').hidden = !LIVE.done; $('tpause').textContent = LIVE.paused ? '▶' : '❚❚';
+}
+
+// ---- watch mode: page served by tools/watch.py (BrawlEnv(watch=True)); polls the frames of the agent's episodes.
+// "follow live" plays the newest episode smoothly about half a second behind the agent and jumps ahead when the agent
+// runs faster than real time; otherwise the buffered episode can be scrubbed/replayed like a recording.
+let WATCH = null;
+function setFollow(on) { if (WATCH) { WATCH.follow = on; $('follow').checked = on; } }
+function selectEpisode(id) {     // next poll fetches it from frame 0
+  Object.assign(WATCH, {ep: id, done: false}); R = null; frames = []; gridAt = []; idx = 0; ptick = 0; resetEvents(); resetAttacks();
+}
+
+async function watchPoll() {
+  const W = WATCH;
+  let m;
+  try { m = await fetch(`/poll?ep=${W.ep ?? -1}&from=${frames.length}&names=${names.length}`).then(r => r.json()); }
+  catch (err) { $('watchstat').textContent = 'agent process gone'; return setTimeout(watchPoll, 2000); }
+  if (!m.episodes.length) { $('watchstat').textContent = 'waiting for the first episode'; return setTimeout(watchPoll, 250); }
+  const newest = m.episodes[m.episodes.length - 1][0];
+  if ((W.follow && W.ep !== null && W.ep !== newest) || (R && m.ep !== W.ep)) {
+    selectEpisode(W.follow ? newest : m.ep);
+    return setTimeout(watchPoll, 0);
+  }
+  for (const [i, n] of m.names) names[i] = n;
+  if (!R) { W.ep = m.ep; load({meta: m.meta, frames: [], names}); }
+  for (const f of m.frames) {
+    frames.push(f); gridAt.push(f[4] ? frames.length - 1 : gridAt[gridAt.length - 1]); noteRoster(f);
+    noteEvents(frames.length - 1);
+  }
+  if (m.frames.length) tlColumns();
+  W.done = m.done;
+  $('scrub').max = Math.max(0, frames.length - 1);
+  if (frames.length && W.follow && !playing) setPlaying(true);
+  if (frames.length && !playing) draw();
+  const sel = $('episode'), want = m.episodes.map(e => e.join('|')).join(',') + W.ep;
+  if (sel.dataset.v !== want) {
+    sel.dataset.v = want;
+    sel.innerHTML = m.episodes.slice().reverse().map(([id, loc, seed, n, done]) =>
+      `<option value="${id}" ${id === W.ep ? 'selected' : ''}>#${id} ${loc} seed ${seed} · ${n} frames${done ? '' : ' · live'}</option>`).join('');
+  }
+  $('watchstat').textContent = W.done ? 'episode finished' : 'agent playing';
+  setTimeout(watchPoll, 250);
+}
+
+function followCatchUp() {       // called from the animation loop while following
+  const lastTick = frames[frames.length - 1][0], lag = lastTick - ptick, rate = R.meta.tickRate;
+  if (lag > rate * 2 * parseFloat($('speed').value) || ptick < frames[0][0]) {
+    ptick = Math.max(frames[0][0], lastTick - rate / 2);
+    idx = 0; while (idx < frames.length - 1 && frames[idx + 1][0] <= ptick) idx++;
+  }
+}
+
+function startWatch(cfg) {
+  WATCH = {ep: null, follow: true, done: false};
+  $('watchcard').hidden = false;
+  $('follow').onchange = e => { setFollow(e.target.checked); if (!e.target.checked) setPlaying(false); };
+  $('episode').onchange = e => { setFollow(false); setPlaying(false); selectEpisode(+e.target.value); };
+  frames = []; names = []; gridAt = [];
+  document.title = `Watching ${cfg.title || 'agent'}`;
+  watchPoll();
+}
+
+const embedded = $('replay').textContent.trim();
+const cfg = embedded && !embedded.startsWith('/*') ? JSON.parse(embedded) : null;
+if (cfg && cfg.live) startLive();
+else if (cfg && cfg.watch) startWatch(cfg);
+else if (embedded && !embedded.startsWith('/*')) {
+  load(JSON.parse(embedded));
+  const t = /t=(\d+)/.exec(location.hash);   // viewer.html#t=600 opens at that tick
+  if (t) setIdx(frames.findIndex(f => f[0] >= +t[1]));
+}
+else $('sub').textContent = 'Drop a replay .json recorded with `driver ... m3 rec=<file>`';
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>

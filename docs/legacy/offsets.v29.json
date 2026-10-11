@@ -1,0 +1,50 @@
+{
+  "_meta": {
+    "binary": "apk/extracted-29/lib/armeabi-v7a/libg.so",
+    "build": "29.270-135 (armeabi-v7a, authentic Supercell-signed)",
+    "sha256": "5bb24854b40b1a5bd3ce77a75b126628cb5d36d1c442eee2fec26649b090a64c",
+    "method": "v29 is fully stripped. Addresses are RE-DERIVED on this binary by: (1) anchoring a function via a distinctive constant/magic from the v36-symbolized oracle, (2) confirming structure (prologue + call pattern), (3) propagating through the call graph. Offsets DRIFT from v36 (e.g. gameover-flag +0x73@v36 -> +0x6f@v29) so they are re-derived per-binary, never copied. Community (liberder) 29.270 offsets are cross-checks only and must be verified (setBotDifficulty@0x5878A0 did NOT match v36's leaf -> not trusted).",
+    "oracle": "apk/extracted/lib/armeabi-v7a/libg.so (v36.218, symbolized)",
+    "status": "mapping in progress; executeOneTick linchpin + 3 callees confirmed"
+  },
+  "battle_lifecycle": {
+    "LogicBattleModeServer::executeOneTick": {
+      "v29_addr": "0x3198c4",
+      "v36_addr": "0x8a26d8",
+      "confidence": "CONFIRMED",
+      "evidence": "identical push{r4-r11,lr} prologue; unique 0x7E07E07F magic (movw#0xe07f/movt#0x7e07) at +0x4c; same structure (gameover flag -> calculateIsGameOver -> calculateXpBonuses -> tick)"
+    },
+    "LogicBattleModeServer::calculateIsGameOver": {
+      "v29_addr": "0x1c8bdc",
+      "v36_addr": "0x8c9484",
+      "confidence": "HIGH",
+      "evidence": "call target from executeOneTick at the gameover-flag site (matches v36 call-graph position)"
+    },
+    "LogicBattleModeServer::tick": {
+      "v29_addr": "0x2bd008",
+      "v36_addr": "0x1ee63c",
+      "confidence": "HIGH",
+      "evidence": "unconditional call after the gameover block in executeOneTick (matches v36)"
+    },
+    "LogicBattleModeServer::calculateXpBonuses": {
+      "v29_addr": "0x5dc818",
+      "v36_addr": "0x22b910",
+      "confidence": "MEDIUM",
+      "evidence": "conditional (blne) call in executeOneTick gameover block; verify"
+    },
+    "LogicBattleModeServer::addGameObjects": {
+      "v29_addr": "0x17b938",
+      "v36_addr": "0x3274e4",
+      "confidence": "HIGH",
+      "evidence": "tools/match_v36_v29.py: 5 shared globally-rare movw/movt 32-bit constants (tf-idf anchor)"
+    }
+  },
+  "_automation_status": {
+    "reliable_tool": "tools/match_v36_v29.py — rare 32-bit movw/movt constant fingerprint; HIGH-precision but only covers functions that materialize distinctive constants (~2/13 battle_lifecycle). Confirmed anchors: executeOneTick, addGameObjects.",
+    "rejected": "tools/match2_v36_v29.py (all-immediate tf-idf) FAILED known-answer check (said executeOneTick=0x47ccb4; collisions onto immediate-rich fns) -> NOT trusted. tools/propagate_v36_v29.py (call-graph/difflib) limited by stripped-binary function-boundary recovery (call lists inflated).",
+    "next": "finish the remaining ~15 key fns by DYNAMIC verification in our own harness (libg.so loads there; frida/gdb attach to our own app) — standard RE practice: static anchors + on-device confirmation. Optionally improve static side later with r2 CFG-based function boundaries."
+  },
+  "struct_offsets": {
+    "LogicBattleModeServer.isGameOverFlag": {"v29": "0x6f", "v36": "0x73", "note": "drift -4; read via ldrb in executeOneTick"}
+  }
+}
