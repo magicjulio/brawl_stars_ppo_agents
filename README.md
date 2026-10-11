@@ -80,6 +80,21 @@ Internal brawler names: ShotgunGirl = Shelly, Gunslinger = Colt, TntDude = Dynam
 - `docs/`: [training_log.md](docs/training_log.md) (every run and what it taught us),
   [driver_plan.md](docs/driver_plan.md) (technical log), `01-04_*.md` (early history).
 
+## Ideas for improvements
+- **Self-play:** the game's bots stop getting harder at difficulty 4, so the next stronger opponent is our own team.
+  Play against earlier checkpoints (a league of past versions) so the agents don't overfit to one opponent.
+- **Reward shaping:** the fight rewards (damage, kills) roughly cancel out and pay even in lost battles. Two things to
+  try: lower them toward the win and gem rewards, and give every brawler the team's mean damage/kills so that
+  covering a teammate pays as much as taking the kill. See [docs/training_log.md](docs/training_log.md).
+- **Aimed attacks:** the agents only use the game's auto-aim. Aiming with a lead on moving targets would bring back
+  throwers like Dynamike, who learned to hide because his auto-aimed throws miss.
+- **Bull:** he deals little damage (~2.2k per minute); check with `tools/policy_stats.py` whether he only carries
+  gems.
+- **More brawlers, maps and modes:** the driver builds any offline battle (`loc=`, `hero=`, `mates=`), so other Gem
+  Grab maps or modes like Brawl Ball need only new evals and training runs.
+- **Longer runs:** most runs here were 10-50 minutes on a laptop CPU, where the network update, not the game, is the
+  limit (~8.5k of the env's ~16k decisions/s). Hours of training or a GPU are the cheapest next gain to try.
+
 ## Legal
 Not affiliated with, endorsed or sponsored by Supercell. Brawl Stars and its characters are Supercell's. This
 repository ships only our own code and documentation, no APK, libraries or game assets. Everything runs offline
